@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxus Todo List Example</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+    <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800 text-center">Fluxus Todo List</h1>
+        
+        <form id="todoForm" class="mb-6">
+            <div class="flex">
+                <input type="text" id="todoInput" placeholder="Add a new todo" required
+                       class="flex-grow px-3 py-2 bg-white border border-gray-300 rounded-l-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                <button type="submit" id="addTodo" 
+                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r-md transition duration-300">
+                    Add
+                </button>
+            </div>
+        </form>
+
+        <ul id="todoList" class="space-y-2"></ul>
+
+        <div class="mt-6 text-center">
+            <p id="todoCount" class="text-gray-600"></p>
+        </div>
+    </div>
+
+    <script type="module">
+        import * as Fluxus from '../dist/index.mjs';
+
+        const { createStore, createAction, createReducer } = Fluxus;
+
+        // Define actions
+        const addTodo = createAction('ADD_TODO');
+        const removeTodo = createAction('REMOVE_TODO');
+        const toggleTodo = createAction('TOGGLE_TODO');
+
+        // Define initial state
+        const initialState = { todos: [] };
+
+        // Define reducer
+        const todoReducer = createReducer(initialState, {
+            [addTodo.type]: (state, action) => ({
+                todos: [...state.todos, { id: Date.now(), text: action.payload, completed: false }]
+            }),
+            [removeTodo.type]: (state, action) => ({
+                todos: state.todos.filter(todo => todo.id !== action.payload)
+            }),
+            [toggleTodo.type]: (state, action) => ({
+                todos: state.todos.map(todo =>
+                    todo.id === action.payload ? { ...todo, completed: !todo.completed } : todo
+                )
+            })
+        });
+
+        // Create store
+        const store = createStore(todoReducer, initialState);
+
+        // Update UI
+        function updateUI() {
+            const { todos } = store.getState();
+            const todoList = document.getElementById('todoList');
+            const todoCount = document.getElementById('todoCount');
+
+            todoList.innerHTML = todos.map(todo => `
+                <li class="flex items-center bg-gray-50 p-2 rounded">
+                    <input type="checkbox" ${todo.completed ? 'checked' : ''}
+                           onchange="toggleTodoItem(${todo.id})"
+                           class="mr-2 form-checkbox h-5 w-5 text-blue-600">
+                    <span class="${todo.completed ? 'line-through text-gray-500' : 'text-gray-800'}">${todo.text}</span>
+                    <button onclick="removeTodoItem(${todo.id})"
+                            class="ml-auto bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-sm transition duration-300">
+                        Remove
+                    </button>
+                </li>
+            `).join('');
+
+            const completedCount = todos.filter(todo => todo.completed).length;
+            todoCount.textContent = `${completedCount} out of ${todos.length} tasks completed`;
+        }
+
+        // Subscribe to state changes
+        store.subscribe(updateUI);
+
+        // Add event listeners
+        document.getElementById('todoForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const todoInput = document.getElementById('todoInput');
+            const newTodo = todoInput.value.trim();
+            if (newTodo) {
+                store.dispatch(addTodo(newTodo));
+                todoInput.value = ''; // Clear input after adding
+            }
+        });
+
+        // Global functions for toggle and remove (since they're used in the HTML)
+        window.toggleTodoItem = (id) => {
+            store.dispatch(toggleTodo(id));
+        };
+
+        window.removeTodoItem = (id) => {
+            store.dispatch(removeTodo(id));
+        };
+
+        // Initial UI update
+        updateUI();
+    </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxus Shopping Cart Example</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800 text-center">Fluxus Shopping Cart</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div id="products">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">Products</h2>
+                <div class="space-y-4">
+                    <button id="addItem1" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                        Add Item 1 ($10)
+                    </button>
+                    <button id="addItem2" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                        Add Item 2 ($20)
+                    </button>
+                    <button id="addItem3" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                        Add Item 3 ($15)
+                    </button>
+                </div>
+            </div>
+
+            <div id="cart">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">Your Cart</h2>
+                <ul id="cartItems" class="mb-4 space-y-2"></ul>
+                <p class="text-xl font-bold mb-4">Total: $<span id="total">0</span></p>
+                <button id="clearCart" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                    Clear Cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import * as Fluxus from '../dist/index.mjs';
+
+        const { createStore, createAction, createReducer } = Fluxus;
+
+        // Define actions
+        const addItem = createAction('ADD_ITEM');
+        const removeItem = createAction('REMOVE_ITEM');
+        const clearCart = createAction('CLEAR_CART');
+
+        // Define initial state
+        const initialState = {
+            items: [],
+            total: 0
+        };
+
+        // Define reducer
+        const cartReducer = createReducer(initialState, {
+            [addItem.type]: (state, action) => {
+                const newItems = [...state.items, action.payload];
+                const newTotal = state.total + action.payload.price;
+                return { items: newItems, total: newTotal };
+            },
+            [removeItem.type]: (state, action) => {
+                const itemIndex = state.items.findIndex(item => item.id === action.payload);
+                if (itemIndex > -1) {
+                    const newItems = [...state.items.slice(0, itemIndex), ...state.items.slice(itemIndex + 1)];
+                    const newTotal = state.total - state.items[itemIndex].price;
+                    return { items: newItems, total: newTotal };
+                }
+                return state;
+            },
+            [clearCart.type]: () => initialState
+        });
+
+        // Create store
+        const store = createStore(cartReducer, initialState);
+
+        // Update UI
+        function updateUI() {
+            const { items, total } = store.getState();
+            const cartItemsElement = document.getElementById('cartItems');
+            const totalElement = document.getElementById('total');
+
+            cartItemsElement.innerHTML = items.map(item => `
+                <li class="flex justify-between items-center bg-gray-100 p-2 rounded">
+                    <span>${item.name} - $${item.price}</span>
+                    <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-sm transition duration-300"
+                            onclick="removeItemFromCart(${item.id})">
+                        Remove
+                    </button>
+                </li>
+            `).join('');
+
+            totalElement.textContent = total.toFixed(2);
+        }
+
+        // Subscribe to state changes
+        store.subscribe(updateUI);
+
+        // Add event listeners for adding items
+        document.getElementById('addItem1').addEventListener('click', () => {
+            store.dispatch(addItem({ id: 1, name: 'Item 1', price: 10 }));
+        });
+
+        document.getElementById('addItem2').addEventListener('click', () => {
+            store.dispatch(addItem({ id: 2, name: 'Item 2', price: 20 }));
+        });
+
+        document.getElementById('addItem3').addEventListener('click', () => {
+            store.dispatch(addItem({ id: 3, name: 'Item 3', price: 15 }));
+        });
+
+        // Event listener for clearing the cart
+        document.getElementById('clearCart').addEventListener('click', () => {
+            store.dispatch(clearCart());
+        });
+
+        // Function to remove item from cart
+        window.removeItemFromCart = (id) => {
+            store.dispatch(removeItem(id));
+        };
+
+        // Initial UI update
+        updateUI();
+    </script>
+</body>
+</html>

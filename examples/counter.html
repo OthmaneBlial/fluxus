@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxus Counter Example</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-md text-center">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">Fluxus Counter</h1>
+        <p class="text-xl mb-4">Count: <span id="count" class="font-bold text-blue-600">0</span></p>
+        <div class="space-x-4">
+            <button id="increment" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                Increment
+            </button>
+            <button id="decrement" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                Decrement
+            </button>
+        </div>
+        <div class="mt-6">
+            <input type="number" id="stepInput" class="border rounded px-2 py-1 w-20 text-center" value="1" min="1">
+            <label for="stepInput" class="ml-2 text-gray-700">Step Size</label>
+        </div>
+    </div>
+
+    <script type="module">
+        import * as Fluxus from '../dist/index.mjs';
+
+        const { createStore, createAction, createReducer } = Fluxus;
+
+        // Define actions
+        const increment = createAction('INCREMENT');
+        const decrement = createAction('DECREMENT');
+
+        // Define initial state
+        const initialState = { count: 0 };
+
+        // Define reducer
+        const counterReducer = createReducer(initialState, {
+            [increment.type]: (state, action) => ({ count: state.count + action.payload }),
+            [decrement.type]: (state, action) => ({ count: state.count - action.payload }),
+        });
+
+        // Create store
+        const store = createStore(counterReducer, initialState);
+
+        // Update UI
+        function updateUI() {
+            const currentState = store.getState();
+            document.getElementById('count').textContent = currentState.count;
+        }
+
+        // Subscribe to state changes
+        store.subscribe(updateUI);
+
+        // Get step size
+        function getStepSize() {
+            return parseInt(document.getElementById('stepInput').value) || 1;
+        }
+
+        // Add event listeners
+        document.getElementById('increment').addEventListener('click', () => {
+            store.dispatch(increment(getStepSize()));
+        });
+
+        document.getElementById('decrement').addEventListener('click', () => {
+            store.dispatch(decrement(getStepSize()));
+        });
+
+        // Initial UI update
+        updateUI();
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxus Authentication Example</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800 text-center">Fluxus Authentication</h1>
+
+        <div id="authContainer">
+            <h2 id="authHeader" class="text-2xl font-semibold mb-4 text-gray-700 text-center">Sign Up</h2>
+            <form id="authForm" class="space-y-4">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" id="username" name="username" required
+                           class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" name="password" required
+                           class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div class="flex space-x-4">
+                    <button type="button" id="signUp" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                        Sign Up
+                    </button>
+                    <button type="button" id="login" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                        Login
+                    </button>
+                </div>
+            </form>
+            <p id="authMessage" class="mt-4 text-sm text-center text-red-600"></p>
+        </div>
+
+        <div id="userContainer" class="hidden">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700 text-center">Welcome, <span id="userDisplayName"></span></h2>
+            <button id="logout" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                Logout
+            </button>
+        </div>
+    </div>
+
+    <script type="module">
+        import * as Fluxus from '../dist/index.mjs';
+
+        const { createStore, createAction, createReducer } = Fluxus;
+
+        // Define actions
+        const signUp = createAction('SIGN_UP');
+        const login = createAction('LOGIN');
+        const logout = createAction('LOGOUT');
+        const setAuthMessage = createAction('SET_AUTH_MESSAGE');
+
+        // Define initial state
+        const initialState = {
+            users: [],
+            currentUser: null,
+            authMessage: '',
+        };
+
+        // Define reducer
+        const authReducer = createReducer(initialState, {
+            [signUp.type]: (state, action) => {
+                const { username, password } = action.payload;
+                const userExists = state.users.some(user => user.username === username);
+                if (userExists) {
+                    return { ...state, authMessage: 'Username already exists.' };
+                }
+                return { 
+                    ...state, 
+                    users: [...state.users, { username, password }],
+                    authMessage: 'Sign up successful. Please log in.'
+                };
+            },
+            [login.type]: (state, action) => {
+                const { username, password } = action.payload;
+                const user = state.users.find(user => user.username === username && user.password === password);
+                if (user) {
+                    return { ...state, currentUser: username, authMessage: '' };
+                }
+                return { ...state, authMessage: 'Invalid username or password.' };
+            },
+            [logout.type]: (state) => ({ ...state, currentUser: null, authMessage: '' }),
+            [setAuthMessage.type]: (state, action) => ({ ...state, authMessage: action.payload }),
+        });
+
+        // Create store
+        const store = createStore(authReducer, initialState);
+
+        // Update UI
+        function updateUI() {
+            const { currentUser, authMessage } = store.getState();
+            const authContainer = document.getElementById('authContainer');
+            const userContainer = document.getElementById('userContainer');
+            const authMessageElement = document.getElementById('authMessage');
+            const userDisplayName = document.getElementById('userDisplayName');
+            const authHeader = document.getElementById('authHeader');
+
+            if (currentUser) {
+                authContainer.classList.add('hidden');
+                userContainer.classList.remove('hidden');
+                userDisplayName.textContent = currentUser;
+            } else {
+                authContainer.classList.remove('hidden');
+                userContainer.classList.add('hidden');
+                authMessageElement.textContent = authMessage;
+                authHeader.textContent = authMessage.includes('Sign up successful') ? 'Login' : 'Sign Up';
+            }
+        }
+
+        // Subscribe to state changes
+        store.subscribe(updateUI);
+
+        // Event listeners
+        document.getElementById('signUp').addEventListener('click', () => {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            if (username && password) {
+                store.dispatch(signUp({ username, password }));
+            } else {
+                store.dispatch(setAuthMessage('Please enter both username and password.'));
+            }
+        });
+
+        document.getElementById('login').addEventListener('click', () => {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            if (username && password) {
+                store.dispatch(login({ username, password }));
+            } else {
+                store.dispatch(setAuthMessage('Please enter both username and password.'));
+            }
+        });
+
+        document.getElementById('logout').addEventListener('click', () => {
+            store.dispatch(logout());
+        });
+
+        // Initial UI update
+        updateUI();
+    </script>
+</body>
+</html>

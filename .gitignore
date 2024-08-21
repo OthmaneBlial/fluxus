@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# ESLint cache
+.eslintcache
+
+# Test coverage
+coverage/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# Vitest
+vitest.config.ts.timestamp-*
+
+# tsup
+tsup.config.ts.timestamp-*
+
+# Cache directories
+.cache/
+.temp/
+
+# Optional: Uncomment if you're using npm
+# package-lock.json
+
+# Keep yarn.lock (or package-lock.json if you're using npm)
+# yarn.lock
