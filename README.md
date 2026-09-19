@@ -1,131 +1,56 @@
 # Fluxus
 
-Fluxus is a high-performance state management library inspired by Redux but designed to overcome some of Redux's limitations. It provides a more efficient and developer-friendly solution for modern applications.
+Fluxus is a small, framework-independent state store built around explicit actions and reducers. It is intended for JavaScript and TypeScript interfaces that need to share predictable in-memory state without adopting a UI framework.
 
-## Features
+**Status:** early development. The package manifest says `0.1.0`, but this repository has not yet verified a release of this code on npm. The unscoped npm name [`fluxus`](https://www.npmjs.com/package/fluxus) currently points to a different project. Do not use `npm install fluxus` to install this repository. See [the roadmap](ROADMAP.md) for the work required before a release.
 
-- **High Performance**: Optimized for speed and minimal memory usage
-- **Simplified API**: Reduces boilerplate while maintaining predictability
-- **Built-in Memoization**: Efficient handling of derived state
-- **Strong TypeScript Support**: Enhanced type inference and safety
-- **Efficient Immutability**: Optimized immutable updates for better performance
-- **Lazy Evaluation**: Support for deferred computation of expensive operations
-- **Modular Architecture**: Easily extensible for custom functionality
+## What it does
 
-## Comparison with Redux
+- Create one in-memory store from a reducer and initial state.
+- Dispatch plain actions and subscribe to updates.
+- Read derived values with `select`; the current implementation memoizes by state reference.
+- Add middleware to the dispatch path.
+- Use optional helpers for immutable updates, memoization, lazy values, and timing. These helpers are separate from the store contract.
 
-While Fluxus draws inspiration from Redux, it addresses several key issues:
+Fluxus does **not** currently provide persistence, real authentication, a network layer, a React hook, or DevTools integration. Its performance and memory use have not been compared in a reproducible benchmark. [Product scope](docs/PRODUCT_SCOPE.md) explains the intended first release and its limits.
 
-1. **Reduced Boilerplate**: Simplified creation of actions and reducers with `createAction` and `createReducer`.
+## Try the source checkout
 
-2. **Improved Performance**: Optimized internal data structures and built-in performance utilities.
-
-3. **Built-in Memoization**: Efficient caching of selector results and expensive computations.
-
-4. **Enhanced TypeScript Support**: Designed with TypeScript from the ground up for improved type safety.
-
-5. **Efficient Immutability**: Optimized immutable update utilities to reduce overhead.
-
-6. **Lazy Evaluation**: Support for deferred computation of expensive operations.
-
-7. **Reduced Memory Usage**: Optimized data structures for efficient memory usage, especially beneficial for applications with many subscribers.
-
-## Installation
+Requirements: Node.js and Yarn 1. The current lint command fails with ESLint 9's configuration format; the roadmap tracks that fix. These commands build the local source and run its existing unit tests:
 
 ```bash
-npm install fluxus
-# or
-yarn add fluxus
+git clone https://github.com/OthmaneBlial/fluxus.git
+cd fluxus
+yarn install --frozen-lockfile
+yarn test
+yarn build
 ```
 
-## Basic Usage
+The build creates `dist/index.mjs` and `dist/index.js`. From the repository root, this small example uses the locally built ESM file:
 
-```typescript
-import { createStore, createAction, createReducer } from 'fluxus';
+```js
+import { createAction, createReducer, createStore } from './dist/index.mjs';
 
-// Define actions
-const increment = createAction<number>('INCREMENT');
-const decrement = createAction<number>('DECREMENT');
-
-// Define initial state
+const add = createAction('counter/add');
 const initialState = { count: 0 };
-
-// Define reducer
-const counterReducer = createReducer(initialState, {
-  [increment.type]: (state, action) => ({ count: state.count + action.payload }),
-  [decrement.type]: (state, action) => ({ count: state.count - action.payload }),
+const reducer = createReducer(initialState, {
+  [add.type]: (state, action) => ({ count: state.count + action.payload }),
 });
+const store = createStore(reducer, initialState);
 
-// Create store
-const store = createStore(counterReducer, initialState);
-
-// Subscribe to state changes
-store.subscribe(() => console.log(store.getState()));
-
-// Use selector with built-in memoization
-const selectCount = (state) => state.count;
-console.log(store.select(selectCount));
-
-// Dispatch actions
-store.dispatch(increment(5));
-store.dispatch(increment(3));
-store.dispatch(decrement(2));
-```
-
-## Advanced Features
-
-### Efficient Immutable Updates
-
-```typescript
-import { updateObject, updateArray } from 'fluxus';
-
-const obj = { a: 1, b: 2, c: 3 };
-const newObj = updateObject(obj, { b: 20, d: 40 });
-
-const arr = [1, 2, 3, 4];
-const newArr = updateArray(arr, 2, 30);
-```
-
-### Lazy Evaluation
-
-```typescript
-import { lazy } from 'fluxus';
-
-const expensiveComputation = lazy(() => {
-  // Expensive operation here
-  return result;
+const unsubscribe = store.subscribe(() => {
+  console.log(store.getState().count);
 });
-
-// Computation is deferred until this point
-const result = expensiveComputation.get();
+store.dispatch(add(2)); // 2
+unsubscribe();
 ```
 
-### Performance Measurement
+The [`examples/`](examples/) directory contains browser pages. They require a build and a local HTTP server because they import `../dist/index.mjs`. The examples are being hardened before they are promoted as a public demo; the current `auth.html` is **not** an authentication solution.
 
-```typescript
-import { measureTime } from 'fluxus';
+## Choosing Fluxus
 
-const [result, executionTime] = measureTime(() => {
-  // Your code here
-});
+The current API favors named actions and one reducer over a mutable state setter. That can help when transitions should be easy to follow in a small framework-free interface. This is a design choice, not a measured advantage over other libraries. See the [source-backed comparison](docs/COMPARISON.md) for concrete trade-offs and the [`ROADMAP.md`](ROADMAP.md) for planned validation.
 
-console.log(`Execution time: ${executionTime}ms`);
-```
+## Contributing and license
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the project
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License.
-
-## Acknowledgements
-
-Fluxus is inspired by Redux and aims to build upon its strengths while addressing its limitations. We're grateful to the Redux team and contributors for their groundbreaking work in state management for JavaScript applications.
+Issues and pull requests are welcome. The contribution, security, test, and release guides are part of the roadmap and are not in place yet. Fluxus is licensed under the [MIT License](LICENSE).
