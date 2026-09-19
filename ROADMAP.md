@@ -41,7 +41,7 @@ Le README et `Redux vs Fluxus.md` revendiquent de meilleures performances, moins
 - [x] 2.5 Benchmarks — harnais reproductible, trois exécutions brutes, tailles bundle, profil mémoire limité et compromis consignés dans `docs/BENCHMARKS.md` ; aucune supériorité générale revendiquée.
 - [x] 3.1 Démo principale — workbench réel avec tâches, filtres, compteurs dérivés, observateur détachable et reset ; parcours navigateur/console/rechargement consignés dans `docs/DEMO.md`.
 - [x] 3.2 Rendu, accessibilité et mobile — vues desktop/390/320 px inspectées, parcours clavier et états vide/erreur vérifiés, audit DOM/contraste local et corrections consignés dans `docs/ACCESSIBILITY_QA.md`.
-- [ ] 3.3 Décision sur les intégrations
+- [x] 3.3 Décision sur les intégrations — recette vanilla et désabonnement documentés, React/persistance/DevTools reportés avec critères de réexamen dans `docs/INTEGRATIONS.md` ; aucune dépendance framework dans le paquet.
 - [ ] 4.1 README et guides
 - [ ] 4.2 Preuves visuelles
 - [ ] 4.3 Contribution et confiance
