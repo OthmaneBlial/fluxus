@@ -23,7 +23,9 @@ export interface Action<T = any> {
    * @returns An action creator function.
    */
   export function createAction<T = void>(type: string) {
-    const actionCreator = (payload?: T) => ({ type, payload });
+    function actionCreator(payload?: T) {
+      return arguments.length === 0 ? { type } : { type, payload };
+    }
     actionCreator.type = type;
     return actionCreator;
   }

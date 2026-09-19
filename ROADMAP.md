@@ -30,7 +30,7 @@ Le README et `Redux vs Fluxus.md` revendiquent de meilleures performances, moins
 
 - [ ] 0.1 Public, scénario et périmètre — documentés dans `docs/PRODUCT_SCOPE.md` ; lecture indépendante encore à obtenir.
 - [x] 0.2 Comparaison loyale — `docs/COMPARISON.md`, versions du registre consultées le 19 septembre 2026, sources officielles et extrait Fluxus exécuté.
-- [ ] 1.1 Contrat actions/réducteurs
+- [x] 1.1 Contrat actions/réducteurs — forme exacte, clés héritées et états `undefined` couverts ; 18 tests, type-check et build réussis localement.
 - [ ] 1.2 Dispatchs, abonnements et middlewares
 - [ ] 1.3 Helpers et mémoire
 - [ ] 1.4 Exemples sûrs

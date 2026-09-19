@@ -30,9 +30,16 @@ export function createReducer<S, A extends Action = Action, M extends ReducerMap
   reducerMap: M
 ): Reducer<S, A> {
   return (state = initialState, action: A) => {
-    const reducer = reducerMap[action.type as keyof M];
-    if (reducer) {
-      return (reducer as (state: S, action: A) => S)(state, action);
+    if (!action || typeof action.type !== 'string') {
+      throw new TypeError('Action must have a string type');
+    }
+    if (Object.prototype.hasOwnProperty.call(reducerMap, action.type)) {
+      const reducer = reducerMap[action.type as keyof M] as (state: S, action: A) => S;
+      const nextState = reducer(state, action);
+      if (nextState === undefined) {
+        throw new Error(`Reducer for ${action.type} returned undefined`);
+      }
+      return nextState;
     }
     return state;
   };
