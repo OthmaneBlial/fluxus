@@ -2,6 +2,8 @@
 
 This file is intentionally empty of testimonials. It is a structured record for the three independent developer journeys required by phase 6.1 of the roadmap.
 
+The neutral participant handoff is in [`INDEPENDENT_TRIAL.md`](INDEPENDENT_TRIAL.md). It deliberately withholds implementation guidance during the first attempt.
+
 For each participant, record only consented, non-identifying information:
 
 | Participant | Version and date | Starting task | Completed without help? | First blocker | Resulting issue or fix |
