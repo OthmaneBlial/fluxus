@@ -64,12 +64,14 @@ describe('Store', () => {
   });
 
   it('does not log actions or state during dispatch', () => {
-    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const methods = ['log', 'info', 'warn', 'error', 'debug'] as const;
+    const spies = methods.map((method) => vi.spyOn(console, method).mockImplementation(() => {}));
     try {
-      new Store(reducer, initialState).dispatch({ type: 'INCREMENT' });
-      expect(log).not.toHaveBeenCalled();
+      const secretState = { token: 'private-token' };
+      new Store(() => secretState, secretState).dispatch({ type: 'REFRESH', payload: secretState.token });
+      for (const spy of spies) expect(spy).not.toHaveBeenCalled();
     } finally {
-      log.mockRestore();
+      for (const spy of spies) spy.mockRestore();
     }
   });
 
@@ -101,6 +103,30 @@ describe('Store', () => {
     store.subscribe(listener);
     store.dispatch({ type: 'UNKNOWN' });
     expect(listener).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps committed state when a subscriber throws and stops that notification', () => {
+    const store = new Store(reducer, initialState);
+    const later = vi.fn();
+    const unsubscribeThrowing = store.subscribe(() => { throw new Error('listener failed'); });
+    store.subscribe(later);
+
+    expect(() => store.dispatch({ type: 'INCREMENT' })).toThrow('listener failed');
+    expect(store.getState().count).toBe(1);
+    expect(later).not.toHaveBeenCalled();
+
+    unsubscribeThrowing();
+    store.dispatch({ type: 'INCREMENT' });
+    expect(store.getState().count).toBe(2);
+    expect(later).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not cache a selector result when the selector throws', () => {
+    const store = new Store(reducer, initialState);
+    const selector = vi.fn(() => { throw new Error('selector failed'); });
+    expect(() => store.select(selector)).toThrow('selector failed');
+    expect(() => store.select(selector)).toThrow('selector failed');
+    expect(selector).toHaveBeenCalledTimes(2);
   });
 
   it('uses a stable listener snapshot during dispatch', () => {

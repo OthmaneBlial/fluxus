@@ -60,6 +60,11 @@ assert.equal(store.select((state) => state.count), 2);
   run('node', ['esm.mjs'], workspace);
   run('node', ['cjs.cjs'], workspace);
 
+  await writeFile(join(workspace, 'missing.mjs'), `import '${packageName}/dist/missing.js';`);
+  const missingEntry = spawnSync('node', ['missing.mjs'], { cwd: workspace, encoding: 'utf8' });
+  assert.notEqual(missingEntry.status, 0, 'An unpublished subpath should not resolve');
+  assert.match(missingEntry.stderr, /ERR_PACKAGE_PATH_NOT_EXPORTED/);
+
   await writeFile(join(workspace, 'tree-shake.mjs'), `
 import { memoize } from '${packageName}';
 console.log(memoize((value) => value + 1)(1));
@@ -107,7 +112,7 @@ void value;
   ));
   assert.equal(installedManifest.name, packageName);
   assert.equal(installedManifest.version, pack.version);
-  console.log(`Installed ${pack.filename}: ${pack.entryCount} files, ${pack.size} bytes; ESM, CJS, both TypeScript resolutions and a single-helper browser bundle passed.`);
+  console.log(`Installed ${pack.filename}: ${pack.entryCount} files, ${pack.size} bytes; ESM, CJS, both TypeScript resolutions, rejected private subpath and a single-helper browser bundle passed.`);
 } finally {
   await rm(workspace, { recursive: true, force: true });
 }

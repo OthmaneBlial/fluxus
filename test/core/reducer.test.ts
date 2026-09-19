@@ -30,6 +30,15 @@ describe('createReducer', () => {
     }
   });
 
+  it('runs a specially named handler when it is an own property', () => {
+    const handlers = Object.defineProperty({}, '__proto__', {
+      value: (state: typeof initialState) => ({ count: state.count + 1 }),
+      enumerable: true,
+    });
+    const reducer = createReducer(initialState, handlers);
+    expect(reducer(initialState, { type: '__proto__' })).toEqual({ count: 1 });
+  });
+
   it('rejects malformed actions and undefined reducer results', () => {
     const reducer = createReducer(initialState, {
       BAD: () => undefined as never,

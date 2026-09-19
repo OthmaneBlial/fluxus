@@ -37,7 +37,7 @@ Le README et `Redux vs Fluxus.md` revendiquent de meilleures performances, moins
 - [x] 2.1 TypeScript, lint et build — installation gelée sans `dist/`, lint, type-check, 36 tests et build réussis ; une erreur de type injectée dans une copie fait échouer `yarn build` (`docs/VALIDATION.md`).
 - [x] 2.2 Types publics — définitions unifiées, union d'actions typée, erreurs de compilation positives/négatives dans `test/types/public-contract.ts`, déclarations CJS/ESM comparées et contrat documenté dans `docs/TYPES.md`.
 - [x] 2.3 Paquet consommable — nom préfixé, exports et contenu npm réduits à 9 fichiers ; tarball installé dans un projet vierge et testé en ESM, CJS, TypeScript et bundler (`docs/PACKAGING.md`).
-- [ ] 2.4 Tests des frontières et du paquet
+- [x] 2.4 Tests des frontières et du paquet — 40 tests sur comportements et erreurs, contrôle type positif/négatif, sous-chemin npm privé rejeté et `yarn verify` réussi après installation gelée en copie séparée (`docs/VALIDATION.md`).
 - [ ] 2.5 Benchmarks
 - [ ] 3.1 Démo principale
 - [ ] 3.2 Rendu, accessibilité et mobile
