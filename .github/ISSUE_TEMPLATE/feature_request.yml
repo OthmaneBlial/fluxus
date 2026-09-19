@@ -1,0 +1,26 @@
+name: Feature proposal
+description: Explain a concrete use case and its compatibility cost
+title: "proposal: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and user scenario
+      description: What would a small browser interface need to do that the current API cannot express well?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Include a small usage example and the observable result.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives and trade-offs
+      description: Could the existing API, a local helper or a framework adapter solve it? What would this add to maintenance or package size?
+    validations:
+      required: true

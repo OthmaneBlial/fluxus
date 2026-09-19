@@ -71,6 +71,6 @@ Fluxus keeps state only in memory. It has no persistence, authentication, server
 
 ## Develop and contribute
 
-Use Node 22 or 24 and Yarn 1. `yarn verify` runs lint, type-check, 40 unit tests, the build and installed-tarball checks. The same suite passed locally under both Node versions; [validation evidence](docs/VALIDATION.md) distinguishes local checks from remote CI. Read the [roadmap](ROADMAP.md) for remaining release and adoption gates. Contribution and security guidance will be linked here when completed.
+Use Node 22 or 24 and Yarn 1. `yarn verify` runs lint, type-check, 40 unit tests, the build and installed-tarball checks. The same suite passed locally under both Node versions; [validation evidence](docs/VALIDATION.md) distinguishes local checks from remote CI. Read the [contribution guide](CONTRIBUTING.md), [compatibility policy](docs/COMPATIBILITY.md), [security policy](SECURITY.md), [code of conduct](CODE_OF_CONDUCT.md) and [roadmap](ROADMAP.md) before a change.
 
 Fluxus is licensed under the [MIT License](LICENSE).
