@@ -1,7 +1,5 @@
-import { Reducer } from './reducer';
-import { Action, Middleware } from '../types';
+import type { Action, Middleware, Reducer, IStore } from '../types';
 import { memoize } from '../utils/memoize';
-import { IStore } from '../types';
 import { applyMiddleware } from './middleware';
 
 /**
@@ -10,9 +8,9 @@ import { applyMiddleware } from './middleware';
  * 
  * @template S The type of state held in the store.
  */
-export class Store<S> implements IStore<S> {
+export class Store<S, A extends Action = Action> implements IStore<S, A> {
   private state: S;
-  private reducer: Reducer<S>;
+  private reducer: Reducer<S, A>;
   private listeners: Set<() => void> = new Set();
   private memoizedSelectors = new WeakMap<(state: S) => unknown, (state: S) => unknown>();
   private isReducing = false;
@@ -24,7 +22,7 @@ export class Store<S> implements IStore<S> {
    * @param initialState The initial state of the application.
    * @param middlewares An optional array of middleware functions.
    */
-  constructor(reducer: Reducer<S>, initialState: S, middlewares: Middleware<S>[] = []) {
+  constructor(reducer: Reducer<S, A>, initialState: S, middlewares: Middleware<S, A>[] = []) {
     this.state = initialState;
     this.reducer = reducer;
     if (middlewares.length > 0) {
@@ -46,7 +44,7 @@ export class Store<S> implements IStore<S> {
    * 
    * @param action The action to dispatch.
    */
-  dispatch(action: Action): void {
+  dispatch(action: A): void {
     if (!action || !Object.prototype.hasOwnProperty.call(action, 'type') || typeof action.type !== 'string') {
       throw new TypeError('Action must have a string type');
     }

@@ -1,4 +1,6 @@
-import { Action } from './action';
+import type { Action, Reducer } from '../types';
+
+export type { Reducer } from '../types';
 
 /**
  * A reducer function takes the current state and an action, and returns a new state.
@@ -6,14 +8,7 @@ import { Action } from './action';
  * @template S The type of state managed by this reducer.
  * @template A The type of actions this reducer can handle.
  */
-export type Reducer<S = any, A extends Action = Action> = (
-  state: S | undefined,
-  action: A
-) => S;
-
-/**
- * A mapping of action types to reducer functions.
- */
+/** A mapping of action types to reducer functions. */
 type ReducerMap<S, A extends Action = Action> = {
   [K in A['type']]?: (state: S, action: Extract<A, { type: K }>) => S;
 };

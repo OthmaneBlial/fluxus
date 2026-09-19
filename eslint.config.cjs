@@ -15,7 +15,6 @@ module.exports = [
     rules: {
       ...tsPlugin.configs.recommended.rules,
       'no-undef': 'off', // TypeScript checks names, including imported types.
-      '@typescript-eslint/no-explicit-any': 'off', // Public API types are tightened in roadmap 2.2.
     },
   },
   {

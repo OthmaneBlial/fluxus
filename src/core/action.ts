@@ -1,31 +1,18 @@
+import type { ActionCreator } from '../types';
+
+export type { Action, ActionCreator } from '../types';
+
 /**
- * Represents an action in the Fluxus system.
- * Actions are payloads of information that send data from your application to your store.
+ * Create a named action. For a payload with a preserved literal type, use
+ * `createAction('counter/add').withPayload<number>()`.
  */
-export interface Action<T = any> {
-    type: string;
-    payload?: T;
+export function createAction<Payload = void, const Type extends string = string>(
+  type: Type
+): ActionCreator<Payload, Type> {
+  function actionCreator(payload?: Payload) {
+    return arguments.length === 0 ? { type } : { type, payload };
   }
-  
-  /**
-   * A function that creates an action.
-   * 
-   * @template T The type of the action payload.
-   */
-  export type ActionCreator<T = void> = T extends void
-    ? () => Action
-    : (payload: T) => Action<T>;
-  
-  /**
-   * Creates an action creator function.
-   * 
-   * @param type The type of the action.
-   * @returns An action creator function.
-   */
-  export function createAction<T = void>(type: string) {
-    function actionCreator(payload?: T) {
-      return arguments.length === 0 ? { type } : { type, payload };
-    }
-    actionCreator.type = type;
-    return actionCreator;
-  }
+  actionCreator.type = type;
+  actionCreator.withPayload = () => actionCreator;
+  return actionCreator as ActionCreator<Payload, Type>;
+}

@@ -1,10 +1,12 @@
-import type { Action, IStore, Middleware, MiddlewareAPI } from '../types';
+import type { Action, Dispatch, IStore, Middleware, MiddlewareAPI } from '../types';
 
 export type { Middleware } from '../types';
 
 /** Compose middleware from left to right around a store's current dispatch. */
-export function applyMiddleware<S>(middlewares: Middleware<S>[], store: IStore<S>): (action: Action) => void {
-  const api: MiddlewareAPI<S> = {
+export function applyMiddleware<S, A extends Action = Action>(
+  middlewares: Middleware<S, A>[], store: IStore<S, A>
+): Dispatch<A> {
+  const api: MiddlewareAPI<S, A> = {
     getState: () => store.getState(),
     dispatch: (action) => store.dispatch(action),
   };

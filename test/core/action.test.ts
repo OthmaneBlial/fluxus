@@ -18,4 +18,12 @@ describe('createAction', () => {
     const clear = createAction<undefined>('CLEAR');
     expect(Object.prototype.hasOwnProperty.call(clear(undefined), 'payload')).toBe(true);
   });
+
+  it('can declare a payload without changing the runtime action creator', () => {
+    const add = createAction('counter/add');
+    const typedAdd = add.withPayload<number>();
+    expect(typedAdd).toBe(add);
+    expect(typedAdd.type).toBe('counter/add');
+    expect(typedAdd(2)).toEqual({ type: 'counter/add', payload: 2 });
+  });
 });

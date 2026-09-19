@@ -9,3 +9,7 @@ For a negative check, `const intentionalTypeFailure: number = "wrong";` was appe
 `bench/cache-profile.mjs` is linted and run separately after a build. It imports `dist/index.mjs`, so the clean prebuild TypeScript check intentionally covers source, tests and TypeScript configuration files, not that runtime benchmark script.
 
 These checks are local. No CI run, package installation by a separate consumer, or published release is claimed here.
+
+## Public types (19 September 2026)
+
+`yarn type-check` compiled `test/types/public-contract.ts`, including expected failures for wrong payloads, missing payloads, an unknown dispatched action and an invalid selector field. `yarn lint`, 37 runtime tests and `yarn build` passed. The generated `dist/index.d.ts` and `dist/index.d.mts` were inspected for the same action, reducer, middleware and store signatures. An installed-tarball check is still required in roadmap task 2.3.

@@ -13,12 +13,13 @@ Fluxus is a small, framework-independent state store built around explicit actio
 - Use optional helpers for immutable updates, memoization, lazy values, and timing. These helpers are separate from the store contract.
 
 The [helper contracts](docs/HELPERS.md) state their cache limits and shallow-copy behavior.
+For a TypeScript action union and checked dispatch, see the [typed example](docs/TYPES.md).
 
 Fluxus does **not** currently provide persistence, real authentication, a network layer, a React hook, or DevTools integration. Its performance and memory use have not been compared in a reproducible benchmark. [Product scope](docs/PRODUCT_SCOPE.md) explains the intended first release and its limits.
 
 ## Try the source checkout
 
-Requirements: Node.js and Yarn 1. The current lint command fails with ESLint 9's configuration format; the roadmap tracks that fix. These commands build the local source and run its existing unit tests:
+Requirements: Node.js and Yarn 1. The local lint, type-check, tests and build passed from a frozen installation in a clean temporary copy; see [validation evidence](docs/VALIDATION.md). These commands build the local source and run its unit tests:
 
 ```bash
 git clone https://github.com/OthmaneBlial/fluxus.git

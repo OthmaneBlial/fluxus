@@ -2,7 +2,9 @@ export type {
   Action,
   ActionCreator,
   Reducer,
+  Dispatch,
   Middleware,
+  MiddlewareAPI,
   IStore,
   StoreCreator,
   CreateStoreOptions
@@ -18,7 +20,7 @@ export { updateObject, updateArray } from './utils/immutable';
 export { lazy, measureTime } from './utils/performance';
 
 import { Store } from './core/store';
-import { Reducer, Middleware } from './types';
+import type { Action, Reducer, Middleware } from './types';
 
 /**
  * Creates and returns a new Fluxus store.
@@ -30,10 +32,10 @@ import { Reducer, Middleware } from './types';
  * @param middlewares An optional array of middleware functions
  * @returns A new Store instance
  */
-export function createStore<S>(
-  reducer: Reducer<S>,
+export function createStore<S, A extends Action = Action>(
+  reducer: Reducer<S, A>,
   initialState: S,
-  middlewares: Middleware<S>[] = []
-): Store<S> {
+  middlewares: Middleware<S, A>[] = []
+): Store<S, A> {
   return new Store(reducer, initialState, middlewares);
 }
