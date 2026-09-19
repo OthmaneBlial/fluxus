@@ -26,7 +26,7 @@ Two more store tests cover an exception from a subscriber after state commit and
 
 ## Node version and documentation checks (19 September 2026)
 
-The complete `yarn verify` sequence passed locally under Node 22.23.2 and 24.21.0, selected through the npm `node` package, with Yarn 1.22.22. After the README and getting-started rewrite, `yarn docs:links` checked 48 relative Markdown links in 17 files on both Node versions. `yarn test:package` also compiled the exact TypeScript block extracted from the README and executed the JavaScript block extracted from `docs/GETTING_STARTED.md` against an installed tarball on both versions. A rendered GitHub page and remote CI still require separate verification.
+The complete `yarn verify` sequence passed locally under Node 22.23.2 and 24.21.0, selected through the npm `node` package, with Yarn 1.22.22. After the README and getting-started rewrite, `yarn docs:links` checked 48 relative Markdown links in 17 files on both Node versions. `yarn test:package` also compiled the exact TypeScript block extracted from the README and executed the JavaScript block extracted from `docs/GETTING_STARTED.md` against an installed tarball on both versions. The README at commit `8614da2` rendered on the public GitHub repository on 19 September 2026: headings, command blocks, the capability table and links were present. Clicking its API reference link opened the rendered `docs/API.md`. Remote CI still requires separate verification.
 
 ## Benchmarks (19 September 2026)
 
