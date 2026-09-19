@@ -14,7 +14,7 @@ export class Store<S> implements IStore<S> {
   private state: S;
   private reducer: Reducer<S>;
   private listeners: Set<() => void> = new Set();
-  private memoizedSelectors: Map<Function, Function> = new Map();
+  private memoizedSelectors: WeakMap<Function, Function> = new WeakMap();
   private isReducing = false;
 
   /**

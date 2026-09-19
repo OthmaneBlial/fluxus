@@ -51,6 +51,18 @@ describe('Store', () => {
     expect(selector).toHaveBeenCalledTimes(1);
   });
 
+  it('recomputes a selector after a state transition and reuses the latest result', () => {
+    const store = new Store(reducer, initialState);
+    const selector = vi.fn((state: typeof initialState) => state.count * 2);
+    expect(store.select(selector)).toBe(0);
+    store.dispatch({ type: 'INCREMENT' });
+    expect(store.select(selector)).toBe(2);
+    expect(store.select(selector)).toBe(2);
+    store.dispatch({ type: 'UNKNOWN' });
+    expect(store.select(selector)).toBe(2);
+    expect(selector).toHaveBeenCalledTimes(2);
+  });
+
   it('does not log actions or state during dispatch', () => {
     const log = vi.spyOn(console, 'log').mockImplementation(() => {});
     try {

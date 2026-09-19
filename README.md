@@ -12,6 +12,8 @@ Fluxus is a small, framework-independent state store built around explicit actio
 - Add middleware to the dispatch path.
 - Use optional helpers for immutable updates, memoization, lazy values, and timing. These helpers are separate from the store contract.
 
+The [helper contracts](docs/HELPERS.md) state their cache limits and shallow-copy behavior.
+
 Fluxus does **not** currently provide persistence, real authentication, a network layer, a React hook, or DevTools integration. Its performance and memory use have not been compared in a reproducible benchmark. [Product scope](docs/PRODUCT_SCOPE.md) explains the intended first release and its limits.
 
 ## Try the source checkout

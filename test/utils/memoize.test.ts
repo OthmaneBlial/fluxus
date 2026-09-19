@@ -13,4 +13,15 @@ describe('memoize', () => {
     expect(memoizedFunction(6)).toBe(12);
     expect(expensiveFunction).toHaveBeenCalledTimes(2);
   });
+
+  it('evicts an older argument and caches undefined results', () => {
+    const fn = vi.fn((value: number) => value === 0 ? undefined : value);
+    const memoized = memoize(fn);
+    expect(memoized(0)).toBeUndefined();
+    expect(memoized(0)).toBeUndefined();
+    expect(fn).toHaveBeenCalledTimes(1);
+    memoized(1);
+    memoized(0);
+    expect(fn).toHaveBeenCalledTimes(3);
+  });
 });

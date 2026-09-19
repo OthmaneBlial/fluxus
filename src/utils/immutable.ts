@@ -1,39 +1,41 @@
 /**
- * Creates a new object with the same properties as the original, but with specified properties updated.
- * This function provides a more efficient way to create immutable updates than Object.assign or spread.
- * 
- * @template T The type of the object
- * @param obj The original object
- * @param updates An object containing the properties to update
- * @returns A new object with the updates applied
+ * Shallowly copies a plain object, then applies its enumerable own updates.
+ * Enumerable symbol keys are copied; inherited and non-enumerable keys are not.
+ * A fresh object is returned even when every value is unchanged.
  */
 export function updateObject<T extends object>(obj: T, updates: Partial<T>): T {
-    const result: T = Object.create(Object.getPrototypeOf(obj));
-    const keys = Object.keys(obj) as (keyof T)[];
-    
-    for (const key of keys) {
-      result[key] = key in updates ? updates[key]! : obj[key];
-    }
-  
-    return result;
+  if (obj === null || typeof obj !== 'object' || Array.isArray(obj)) {
+    throw new TypeError('updateObject requires a plain object');
   }
-  
-  /**
-   * Creates a new array with an element updated at the specified index.
-   * 
-   * @template T The type of array elements
-   * @param array The original array
-   * @param index The index of the element to update
-   * @param newValue The new value for the element
-   * @returns A new array with the update applied
-   */
-  export function updateArray<T>(array: T[], index: number, newValue: T): T[] {
-    if (index < 0 || index >= array.length) {
-      throw new Error('Index out of bounds');
-    }
-    const result = new Array(array.length);
-    for (let i = 0; i < array.length; i++) {
-      result[i] = i === index ? newValue : array[i];
-    }
-    return result;
+  const prototype = Object.getPrototypeOf(obj);
+  if (prototype !== Object.prototype && prototype !== null) {
+    throw new TypeError('updateObject requires a plain object');
   }
+  if (updates === null || typeof updates !== 'object') {
+    throw new TypeError('updateObject requires an updates object');
+  }
+
+  const result = Object.create(prototype) as T;
+  for (const source of [obj, updates]) {
+    for (const key of Reflect.ownKeys(source)) {
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      Object.defineProperty(result, key, {
+        value: (source as Record<PropertyKey, unknown>)[key],
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    }
+  }
+  return result;
+}
+
+/** Return a shallow array copy with one valid integer index replaced. */
+export function updateArray<T>(array: T[], index: number, newValue: T): T[] {
+  if (!Array.isArray(array) || !Number.isInteger(index) || index < 0 || index >= array.length) {
+    throw new Error('Index out of bounds');
+  }
+  const result = array.slice();
+  result[index] = newValue;
+  return result;
+}
