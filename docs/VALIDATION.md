@@ -31,3 +31,7 @@ The complete `yarn verify` sequence passed locally under Node 22.23.2 and 24.21.
 ## Benchmarks (19 September 2026)
 
 Redux Toolkit, Zustand and esbuild were added as pinned development dependencies. The benchmark script completed three separate 200,000-operation runs per workload with five rotated trials each, and saved raw JSON results in `bench/results/`. The GC-forced cache profile was also saved. The environment, measured ranges, semantic differences and limitations are in [BENCHMARKS.md](BENCHMARKS.md). After the dependency change, `yarn verify` passed again locally with 40 tests and the 9-file installed tarball check.
+
+## Visual evidence (19 September 2026)
+
+Chrome captured the built local workbench at 1280 px in its initial state and after adding and completing a task, plus an initial 390 px mobile layout. Each full-page PNG was inspected. A 1280 × 640 social cover was rendered from `docs/assets/social-preview.html` with the actual initial screenshot in its inset. Source revision, dimensions and SHA-256 hashes are recorded in [the image provenance](assets/README.md); each PNG is under 122 KB. After commit `62cc606` was pushed, the public GitHub README loaded the initial image at its original width, and the rendered `docs/DEMO.md` loaded all three screenshots. This verifies repository-hosted images, not a public interactive demo or the GitHub social-preview setting.

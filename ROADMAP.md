@@ -43,7 +43,7 @@ Le README et `Redux vs Fluxus.md` revendiquent de meilleures performances, moins
 - [x] 3.2 Rendu, accessibilité et mobile — vues desktop/390/320 px inspectées, parcours clavier et états vide/erreur vérifiés, audit DOM/contraste local et corrections consignés dans `docs/ACCESSIBILITY_QA.md`.
 - [x] 3.3 Décision sur les intégrations — recette vanilla et désabonnement documentés, React/persistance/DevTools reportés avec critères de réexamen dans `docs/INTEGRATIONS.md` ; aucune dépendance framework dans le paquet.
 - [x] 4.1 README et guides — README et guides testés depuis le tarball sous Node 22/24, 48 liens locaux contrôlés et rendu GitHub du commit `8614da2` vérifié avec ouverture de `docs/API.md`.
-- [ ] 4.2 Preuves visuelles
+- [x] 4.2 Preuves visuelles — captures réelles initiale/après actions/mobile et couverture issue de la capture, avec dimensions, hash et source dans `docs/assets/README.md` ; images chargées dans le README et le guide GitHub publics. Aucune démo hébergée n'est annoncée.
 - [ ] 4.3 Contribution et confiance
 - [ ] 5.1 CI
 - [ ] 5.2 Artefacts et notes de version
