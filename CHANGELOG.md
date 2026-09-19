@@ -6,9 +6,9 @@ Changes to versions are recorded here. A version heading does not establish publ
 
 No changes are listed yet.
 
-## 0.1.1 — release candidate
+## 0.1.1 — 19 September 2026
 
-Prepared as the next release candidate after the published [`@othmaneblial/fluxus@0.1.0`](https://www.npmjs.com/package/@othmaneblial/fluxus) release. Publication and release assets remain pending verification.
+Published as [`@othmaneblial/fluxus@0.1.1`](https://www.npmjs.com/package/@othmaneblial/fluxus), with the checked tarball attached to [GitHub Release v0.1.1](https://github.com/OthmaneBlial/fluxus/releases/tag/v0.1.1). The public workbench remains available at the [verified demo](https://othmaneblial.github.io/fluxus/).
 
 - Prepared the package README to stay synchronized with the verified npm, release and demo entry points at publication time.
 - Added a release check that compares an already published tarball with the current candidate instead of silently accepting version reuse.

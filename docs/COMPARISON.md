@@ -63,7 +63,7 @@ The [official vanilla-store reference](https://zustand.docs.pmnd.rs/reference/ap
 | Read and subscribe to state | `getState`, whole-store `subscribe`, `select` | Store `getState`/`subscribe`; selectors including `createSelector` | Vanilla `getState`/`subscribe`; optional `subscribeWithSelector` |
 | Browser UI framework | No built-in adapter yet | Official React-Redux integration documented | React hook and vanilla store documented |
 | Persistence, DevTools, network helpers | Not provided here | DevTools defaults and optional RTK Query documented | Persistence and DevTools middleware documented in [official reference](https://zustand.docs.pmnd.rs/reference/index) |
-| Published installation of **this** repository | `@othmaneblial/fluxus@0.1.0` published and registry tarball checked; `0.1.1` is a local release candidate; unscoped name is occupied | Published package at the version checked | Published package at the version checked |
+| Published installation of **this** repository | `@othmaneblial/fluxus@0.1.1` published and registry tarball checked; unscoped name is occupied | Published package at the version checked | Published package at the version checked |
 
 ## Where Fluxus might fit
 

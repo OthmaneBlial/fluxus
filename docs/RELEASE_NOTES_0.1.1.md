@@ -1,18 +1,18 @@
 # Fluxus 0.1.1
 
-Fluxus 0.1.1 is a documentation and release metadata patch over 0.1.0. This file is a release draft until the registry, tag and assets are verified. The runtime API and browser behavior are unchanged.
+Fluxus 0.1.1 is a documentation and release metadata patch over 0.1.0. The runtime API and browser behavior are unchanged.
 
 ## Included
 
-- The package README is prepared to point directly to the verified npm package, GitHub Release and public task workbench.
+- The package README points to the published package, GitHub Release and public task workbench.
 - The release procedure detects a published version whose local candidate has drifted instead of reusing the version silently.
 - The onboarding, comparison, compatibility and product-scope pages identify the current published version consistently.
 
 ## Verification
 
 - `yarn verify` passes on Node 22 and Node 24 in GitHub Actions.
-- `yarn release:check` builds the exact nine-file package and installs it in an isolated consumer before publication.
-- The GitHub Release will include the package tarball, `SHA256SUMS` and `release-manifest.json` after the publication gate passes.
+- `yarn release:check` built the exact nine-file package and installed it in an isolated consumer before publication.
+- The GitHub Release includes the package tarball, `SHA256SUMS` and `release-manifest.json`.
 - The public workbench was tested for add, complete, filtering, observer pause, reset and a 390 px viewport.
 
 ## Limits

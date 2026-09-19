@@ -1,6 +1,6 @@
 # Compatibility and versioning
 
-The package manifest currently says `@othmaneblial/fluxus@0.1.1`, which is a local release candidate. The published and verified version is `0.1.0`; a version in the repository is not evidence of a released package, so future versions must repeat the registry and asset checks in [the release procedure](RELEASE.md).
+The package manifest currently says `@othmaneblial/fluxus@0.1.1`; that exact version was published to npm and its tarball was checked against the GitHub Release. A version in the repository is not evidence of a released package, so future versions must repeat the registry and asset checks in [the release procedure](RELEASE.md).
 
 ## Tested environments
 

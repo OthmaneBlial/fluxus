@@ -1,6 +1,6 @@
 # Public introduction draft
 
-This is copy for a first, modest introduction to JavaScript developers working on small framework-free interfaces. It refers to the verified `0.1.0` release and public demo; update the version after the `0.1.1` candidate is independently published and verified, and record any later post or community response separately.
+This is copy for a first, modest introduction to JavaScript developers working on small framework-free interfaces. It refers to the verified `0.1.1` release and public demo; record any later post or community response separately.
 
 > Several views of a small browser interface can drift when each updates its own state. I built Fluxus to make those transitions explicit: named actions go through a reducer, and subscribers update from one in-memory store. The [task workbench](https://github.com/OthmaneBlial/fluxus/blob/main/examples/workbench.html) shows a list, progress summary and detachable observer responding to the same actions. The README has a real screenshot, a local run path and a typed example. Fluxus has no persistence, remote sync or framework hooks; the [comparison](https://github.com/OthmaneBlial/fluxus/blob/main/docs/COMPARISON.md) explains when a larger tool may fit better. Feedback on the API and the first-run path is welcome through the repository's issue forms.
 
