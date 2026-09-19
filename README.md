@@ -1,5 +1,7 @@
 # Fluxus
 
+[![Verify](https://github.com/OthmaneBlial/fluxus/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/OthmaneBlial/fluxus/actions/workflows/ci.yml)
+
 **Explicit state for small browser interfaces.** Fluxus is a framework-independent JavaScript/TypeScript store built around named actions, a reducer and subscriptions. It fits widgets or pages where several views need to agree on the same in-memory state.
 
 **Release status:** the scoped `@othmaneblial/fluxus` tarball has passed local consumer checks on Node 22 and 24, but this repository has **not published or verified it on npm**. The unscoped [`fluxus`](https://www.npmjs.com/package/fluxus) package belongs to another project. Use the source checkout or a locally packed tarball for now; do not install the unscoped package expecting this code.

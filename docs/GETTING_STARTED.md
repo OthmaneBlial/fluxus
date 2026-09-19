@@ -1,6 +1,6 @@
 # Getting started from the repository
 
-The npm package has not been published or verified yet. These instructions use the actual repository and a locally built tarball of `@othmaneblial/fluxus`. They were checked with Node 22.23.2 and 24.21.0 plus Yarn 1.22.22 on macOS; remote CI is a separate release gate.
+The npm package has not been published or verified yet. These instructions use the actual repository and a locally built tarball of `@othmaneblial/fluxus`. They were checked with Node 22.23.2 and 24.21.0 plus Yarn 1.22.22 on macOS; [GitHub CI results](VALIDATION.md#github-ci-19-september-2026) are recorded separately.
 
 ## Run the browser example
 

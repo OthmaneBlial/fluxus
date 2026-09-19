@@ -16,7 +16,7 @@ These checks are local. No CI run, package installation by a separate consumer, 
 
 ## Package consumer (19 September 2026)
 
-`npm pack --dry-run --json` ran `prepack` and listed only 9 intended files. `yarn test:package` installed the resulting tarball in a temporary consumer and passed ESM/CJS runtime imports, `.mts`/`.cts` TypeScript resolution, and a browser esbuild check for a single helper. See [the package contract](PACKAGING.md). This check used the local Node runtime; the GitHub CI matrix is still pending.
+`npm pack --dry-run --json` ran `prepack` and listed only 9 intended files. `yarn test:package` installed the resulting tarball in a temporary consumer and passed ESM/CJS runtime imports, `.mts`/`.cts` TypeScript resolution, and a browser esbuild check for a single helper. See [the package contract](PACKAGING.md). This check used the local Node runtime; the later GitHub CI result is recorded below.
 
 ## Full boundary and package suite (19 September 2026)
 
@@ -26,7 +26,7 @@ Two more store tests cover an exception from a subscriber after state commit and
 
 ## Node version and documentation checks (19 September 2026)
 
-The complete `yarn verify` sequence passed locally under Node 22.23.2 and 24.21.0, selected through the npm `node` package, with Yarn 1.22.22. After the README and getting-started rewrite, `yarn docs:links` checked 48 relative Markdown links in 17 files on both Node versions. `yarn test:package` also compiled the exact TypeScript block extracted from the README and executed the JavaScript block extracted from `docs/GETTING_STARTED.md` against an installed tarball on both versions. The README at commit `8614da2` rendered on the public GitHub repository on 19 September 2026: headings, command blocks, the capability table and links were present. Clicking its API reference link opened the rendered `docs/API.md`. Remote CI still requires separate verification.
+The complete `yarn verify` sequence passed locally under Node 22.23.2 and 24.21.0, selected through the npm `node` package, with Yarn 1.22.22. After the README and getting-started rewrite, `yarn docs:links` checked 48 relative Markdown links in 17 files on both Node versions. `yarn test:package` also compiled the exact TypeScript block extracted from the README and executed the JavaScript block extracted from `docs/GETTING_STARTED.md` against an installed tarball on both versions. The README at commit `8614da2` rendered on the public GitHub repository on 19 September 2026: headings, command blocks, the capability table and links were present. Clicking its API reference link opened the rendered `docs/API.md`. The later GitHub CI result is recorded below.
 
 ## Benchmarks (19 September 2026)
 
@@ -39,3 +39,7 @@ Chrome captured the built local workbench at 1280 px in its initial state and af
 ## Contribution and private reports (19 September 2026)
 
 The contribution guide uses the same frozen Yarn install and `yarn verify` path already exercised in a clean temporary checkout for the phase 2 package check. After commit `5e7832c`, `yarn docs:links` checked 69 links in 21 files and Ruby's YAML parser loaded all three issue form configuration files. GitHub rendered the issue chooser with Bug report, Feature proposal and the private security link. Opening Bug report showed the four required fields and the warnings against posting secrets; no issue was submitted. GitHub's repository security settings showed private vulnerability reporting disabled before it was enabled, then showed the Disable control. No response-time or released-version support is claimed.
+
+## GitHub CI (19 September 2026)
+
+The first [Verify run](https://github.com/OthmaneBlial/fluxus/actions/runs/35444079229) completed with `success` at commit `1405522`. Its Node 22 and Node 24 jobs both completed successfully on GitHub-hosted Ubuntu runners: checkout, Node setup, Yarn 1.22.22 installation, frozen dependency installation and `yarn verify`. The workflow has `push` on `main`, `pull_request` and manual triggers with read-only repository contents permission. The push path is verified by this run; a real pull-request event has not been exercised. The repository's Dependabot version-update configuration covers npm/Yarn dependencies and GitHub Actions weekly, and the security settings showed Dependabot alerts enabled after the change. No automatic dependency-update PR result is claimed.
