@@ -30,7 +30,7 @@ export function createReducer<S, A extends Action = Action, M extends ReducerMap
   reducerMap: M
 ): Reducer<S, A> {
   return (state = initialState, action: A) => {
-    if (!action || typeof action.type !== 'string') {
+    if (!action || !Object.prototype.hasOwnProperty.call(action, 'type') || typeof action.type !== 'string') {
       throw new TypeError('Action must have a string type');
     }
     if (Object.prototype.hasOwnProperty.call(reducerMap, action.type)) {

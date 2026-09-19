@@ -36,6 +36,7 @@ describe('createReducer', () => {
     });
     expect(() => reducer(initialState, null as never)).toThrow('Action must have a string type');
     expect(() => reducer(initialState, { type: 42 } as never)).toThrow('Action must have a string type');
+    expect(() => reducer(initialState, Object.create({ type: 'BAD' }) as never)).toThrow('Action must have a string type');
     expect(() => reducer(initialState, { type: 'BAD' })).toThrow('returned undefined');
   });
 });

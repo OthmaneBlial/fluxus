@@ -1,29 +1,16 @@
-import { Store } from './store';
-import { Action } from './action';
+import type { Action, IStore, Middleware, MiddlewareAPI } from '../types';
 
-/**
- * Middleware is a higher-order function that composes a dispatch function to enable
- * features like dispatching async actions, routing, etc.
- */
-export type Middleware = <S>(
-  store: Store<S>
-) => (next: (action: Action) => void) => (action: Action) => void;
+export type { Middleware } from '../types';
 
-/**
- * Applies middleware to the dispatch function of the store.
- * 
- * @param middlewares An array of middleware functions.
- * @param store The store instance.
- * @returns A new dispatch function enhanced with the middlewares.
- */
-export function applyMiddleware<S>(
-  middlewares: Middleware[],
-  store: Store<S>
-): (action: Action) => void {
-  const chain = middlewares.map(middleware => middleware(store));
-  
-  return chain.reduceRight(
-    (next, middleware) => middleware(next),
-    store.dispatch.bind(store)
+/** Compose middleware from left to right around a store's current dispatch. */
+export function applyMiddleware<S>(middlewares: Middleware<S>[], store: IStore<S>): (action: Action) => void {
+  const api: MiddlewareAPI<S> = {
+    getState: () => store.getState(),
+    dispatch: (action) => store.dispatch(action),
+  };
+
+  return middlewares.reduceRight(
+    (next, middleware) => middleware(api)(next),
+    store.dispatch.bind(store),
   );
 }

@@ -31,8 +31,8 @@ export interface Action<T = any> {
     dispatch: (action: any) => void;
   }
   
-  export type Middleware = <S>(api: MiddlewareAPI<S>) => 
-    (next: (action: any) => void) => (action: any) => void;
+  export type Middleware<S = unknown> = (api: MiddlewareAPI<S>) =>
+    (next: (action: Action) => void) => (action: Action) => void;
   
   /**
    * Represents the Fluxus store, which holds the complete state tree of your app.
@@ -66,7 +66,7 @@ export interface Action<T = any> {
   export type StoreCreator = <S>(
     reducer: Reducer<S>,
     initialState: S,
-    middlewares?: Middleware[]
+    middlewares?: Middleware<S>[]
   ) => IStore<S>;
   
   /**
@@ -75,5 +75,5 @@ export interface Action<T = any> {
   export interface CreateStoreOptions<S> {
     reducer: Reducer<S>;
     initialState: S;
-    middlewares?: Middleware[];
+    middlewares?: Middleware<S>[];
   }

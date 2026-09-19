@@ -33,7 +33,7 @@ import { Reducer, Middleware } from './types';
 export function createStore<S>(
   reducer: Reducer<S>,
   initialState: S,
-  middlewares: Middleware[] = []
+  middlewares: Middleware<S>[] = []
 ): Store<S> {
   return new Store(reducer, initialState, middlewares);
 }

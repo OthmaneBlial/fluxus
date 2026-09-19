@@ -1,7 +1,8 @@
-import { Reducer } from './reducer'
-import { Middleware, MiddlewareAPI } from '../types'
+import { Reducer } from './reducer';
+import { Action, Middleware } from '../types';
 import { memoize } from '../utils/memoize';
 import { IStore } from '../types';
+import { applyMiddleware } from './middleware';
 
 /**
  * The Store class is the heart of Fluxus. It holds the state of your application,
@@ -14,6 +15,7 @@ export class Store<S> implements IStore<S> {
   private reducer: Reducer<S>;
   private listeners: Set<() => void> = new Set();
   private memoizedSelectors: Map<Function, Function> = new Map();
+  private isReducing = false;
 
   /**
    * Creates a new Store instance.
@@ -22,12 +24,12 @@ export class Store<S> implements IStore<S> {
    * @param initialState The initial state of the application.
    * @param middlewares An optional array of middleware functions.
    */
-  constructor(reducer: Reducer<S>, initialState: S, middlewares: Middleware[] = []) {
+  constructor(reducer: Reducer<S>, initialState: S, middlewares: Middleware<S>[] = []) {
     this.state = initialState;
     this.reducer = reducer;
-    
-    // Apply middlewares
-    this.applyMiddlewares(middlewares);
+    if (middlewares.length > 0) {
+      this.dispatch = applyMiddleware(middlewares, this);
+    }
   }
 
   /**
@@ -44,11 +46,25 @@ export class Store<S> implements IStore<S> {
    * 
    * @param action The action to dispatch.
    */
-  dispatch(action: any): void {
-    console.log('Dispatching action:', action);
-    const oldState = this.state;
-    this.state = this.reducer(this.state, action);
-    console.log('State updated. Old:', oldState, 'New:', this.state);
+  dispatch(action: Action): void {
+    if (!action || !Object.prototype.hasOwnProperty.call(action, 'type') || typeof action.type !== 'string') {
+      throw new TypeError('Action must have a string type');
+    }
+    if (this.isReducing) {
+      throw new Error('Reducers may not dispatch actions');
+    }
+
+    let nextState: S;
+    this.isReducing = true;
+    try {
+      nextState = this.reducer(this.state, action);
+    } finally {
+      this.isReducing = false;
+    }
+    if (nextState === undefined) {
+      throw new Error('Reducer returned undefined');
+    }
+    this.state = nextState;
     this.notifyListeners();
   }
 
@@ -80,22 +96,8 @@ export class Store<S> implements IStore<S> {
    * Notifies all registered listeners of a state change.
    */
   private notifyListeners(): void {
-    this.listeners.forEach(listener => listener());
-  }
-
-  /**
-   * Applies the middleware chain to the dispatch function.
-   * 
-   * @param middlewares An array of middleware functions.
-   */
-  private applyMiddlewares(middlewares: Middleware[]): void {
-    if (middlewares.length > 0) {
-      const middlewareAPI: MiddlewareAPI<S> = {
-        getState: this.getState.bind(this),
-        dispatch: (action: any) => this.dispatch(action)
-      };
-      const chain = middlewares.map(middleware => middleware(middlewareAPI));
-      this.dispatch = chain.reduce((a, b) => (next: any) => a(b(next)))(this.dispatch.bind(this));
+    for (const listener of [...this.listeners]) {
+      if (this.listeners.has(listener)) listener();
     }
   }
 }
