@@ -11,4 +11,4 @@ Local verification on 19 September 2026 with a build of this worktree, served ov
 | Styles and console | The pages loaded `./styles.css` locally. A fresh Todo tab showed no browser warnings or errors; the four example sources contain no Tailwind CDN, `innerHTML`, inline `onclick`/`onchange`, or password field. |
 | Layout | Desktop views were inspected for all four examples. At a 390 × 844 viewport, Todo and Cart both had `document.documentElement.scrollWidth === innerWidth === 390`; their primary controls remained visible and usable. |
 
-The responsive checks cover two representative pages, not every device or assistive technology. Full accessibility and final demo testing remain in phase 3 of the [roadmap](../ROADMAP.md).
+The responsive checks cover two representative recipe pages, not every device or assistive technology. The later main workbench has a separate [visual and accessibility record](ACCESSIBILITY_QA.md); public hosting is tracked in the [roadmap](../ROADMAP.md).

@@ -60,6 +60,12 @@ assert.equal(store.select((state) => state.count), 2);
   run('node', ['esm.mjs'], workspace);
   run('node', ['cjs.cjs'], workspace);
 
+  const guide = await readFile(join(root, 'docs', 'GETTING_STARTED.md'), 'utf8');
+  const guideJavaScript = guide.match(/```js\n([\s\S]*?)\n```/)?.[1];
+  assert.ok(guideJavaScript, 'Getting-started JavaScript example is missing');
+  await writeFile(join(workspace, 'guide.mjs'), guideJavaScript);
+  assert.equal(run('node', ['guide.mjs'], workspace).trim(), '1');
+
   await writeFile(join(workspace, 'missing.mjs'), `import '${packageName}/dist/missing.js';`);
   const missingEntry = spawnSync('node', ['missing.mjs'], { cwd: workspace, encoding: 'utf8' });
   assert.notEqual(missingEntry.status, 0, 'An unpublished subpath should not resolve');
@@ -98,12 +104,16 @@ void value;
 `;
   await writeFile(join(workspace, 'types.mts'), typeFixture);
   await writeFile(join(workspace, 'types.cts'), typeFixture);
+  const readme = await readFile(join(root, 'README.md'), 'utf8');
+  const readmeTypeScript = readme.match(/```ts\n([\s\S]*?)\n```/)?.[1];
+  assert.ok(readmeTypeScript, 'README TypeScript example is missing');
+  await writeFile(join(workspace, 'readme.mts'), readmeTypeScript);
   await writeFile(join(workspace, 'tsconfig.json'), JSON.stringify({
     compilerOptions: {
       module: 'NodeNext', moduleResolution: 'NodeNext', target: 'ES2022',
       strict: true, noEmit: true, skipLibCheck: false,
     },
-    include: ['types.mts', 'types.cts'],
+    include: ['types.mts', 'types.cts', 'readme.mts'],
   }));
   run(resolve(root, 'node_modules/.bin/tsc'), ['-p', 'tsconfig.json'], workspace);
 
@@ -112,7 +122,7 @@ void value;
   ));
   assert.equal(installedManifest.name, packageName);
   assert.equal(installedManifest.version, pack.version);
-  console.log(`Installed ${pack.filename}: ${pack.entryCount} files, ${pack.size} bytes; ESM, CJS, both TypeScript resolutions, rejected private subpath and a single-helper browser bundle passed.`);
+  console.log(`Installed ${pack.filename}: ${pack.entryCount} files, ${pack.size} bytes; ESM, CJS, README TypeScript, guide JavaScript, both TypeScript resolutions, rejected private subpath and a single-helper browser bundle passed.`);
 } finally {
   await rm(workspace, { recursive: true, force: true });
 }

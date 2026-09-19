@@ -22,7 +22,7 @@ module.exports = [
     languageOptions: { globals: { global: 'readonly', process: 'readonly', console: 'readonly' } },
   },
   {
-    files: ['test/consumer/**/*.mjs'],
+    files: ['test/consumer/**/*.mjs', 'scripts/**/*.mjs'],
     languageOptions: { globals: { process: 'readonly', console: 'readonly' } },
   },
   {

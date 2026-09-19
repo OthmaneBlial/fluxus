@@ -1,6 +1,6 @@
 # Core runtime contract
 
-This contract describes the implemented core runtime behavior. [Helper caching and update rules](HELPERS.md), type inference, packaging, and browser examples are tracked separately in the [roadmap](../ROADMAP.md).
+This contract describes the implemented core runtime behavior. [Helper caching and update rules](HELPERS.md), [public types](TYPES.md), [packaging](PACKAGING.md) and [browser behavior](DEMO.md) have their own records.
 
 ## Actions and reducers
 

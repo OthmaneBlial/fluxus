@@ -23,4 +23,4 @@ The explicit action union tells `createReducer` which actions its map accepts an
 
 Reducers must return a new state value for changes. Fluxus does not freeze state, detect in-place mutations, or deep-clone reducer output. Selectors cache by state reference, so mutating the current state in place can produce stale results. See the [runtime contract](CORE_CONTRACT.md) for dispatch and subscription behavior.
 
-The positive and negative compile checks are in [`test/types/public-contract.ts`](../test/types/public-contract.ts). The generated CommonJS and ESM declaration files are inspected during the build validation; installed-tarball checks follow in roadmap task 2.3.
+The positive and negative compile checks are in [`test/types/public-contract.ts`](../test/types/public-contract.ts). The generated CommonJS and ESM declaration files are inspected during the build validation, and the installed tarball is checked with `.cts` and `.mts` consumers.

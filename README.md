@@ -1,59 +1,72 @@
 # Fluxus
 
-Fluxus is a small, framework-independent state store built around explicit actions and reducers. It is intended for JavaScript and TypeScript interfaces that need to share predictable in-memory state without adopting a UI framework.
+**Explicit state for small browser interfaces.** Fluxus is a framework-independent JavaScript/TypeScript store built around named actions, a reducer and subscriptions. It fits widgets or pages where several views need to agree on the same in-memory state.
 
-**Status:** early development. The manifest now uses `@othmaneblial/fluxus`, but this repository has not published or verified that package on npm. The unscoped npm name [`fluxus`](https://www.npmjs.com/package/fluxus) points to a different project. Do not use `npm install fluxus` to install this repository. See the [package checks](docs/PACKAGING.md) and [roadmap](ROADMAP.md) before relying on a release.
+**Release status:** the scoped `@othmaneblial/fluxus` tarball has passed local consumer checks on Node 22 and 24, but this repository has **not published or verified it on npm**. The unscoped [`fluxus`](https://www.npmjs.com/package/fluxus) package belongs to another project. Use the source checkout or a locally packed tarball for now; do not install the unscoped package expecting this code.
 
-## What it does
+## Try the real demo
 
-- Create one in-memory store from a reducer and initial state.
-- Dispatch plain actions and subscribe to updates.
-- Read derived values with `select`; the current implementation memoizes by state reference.
-- Add middleware to the dispatch path.
-- Use optional helpers for immutable updates, memoization, lazy values, and timing. These helpers are separate from the store contract.
-
-The [helper contracts](docs/HELPERS.md) state their cache limits and shallow-copy behavior.
-For a TypeScript action union and checked dispatch, see the [typed example](docs/TYPES.md).
-
-Fluxus does **not** currently provide persistence, real authentication, a network layer, a React hook, or DevTools integration. A [local benchmark](docs/BENCHMARKS.md) records specific workloads and bundle sizes; it does not establish a general performance or memory advantage. [Product scope](docs/PRODUCT_SCOPE.md) explains the intended first release and its limits.
-
-## Try the source checkout
-
-Requirements: Node.js and Yarn 1. The local lint, type-check, tests and build passed from a frozen installation in a clean temporary copy; see [validation evidence](docs/VALIDATION.md). These commands build the local source and run its unit tests:
+The [task workbench](examples/workbench.html) adds, filters, completes and removes tasks. Its list, progress summary and detachable event observer read one store. The [walkthrough](docs/DEMO.md) explains the state transitions and exact expected results.
 
 ```bash
 git clone https://github.com/OthmaneBlial/fluxus.git
 cd fluxus
 yarn install --frozen-lockfile
-yarn test
 yarn build
+python3 -m http.server 8000
 ```
 
-The build creates `dist/index.mjs` and `dist/index.js`. From the repository root, this small example uses the locally built ESM file:
+Open `http://localhost:8000/examples/workbench.html`. The demo uses the built `dist/index.mjs`, local CSS and sample data; it makes no third-party network request and resets on reload. The smaller [examples](examples/) show a counter, task list, cart and **local session-state simulation**. The session page does not authenticate anyone.
 
-```js
-import { createAction, createReducer, createStore } from './dist/index.mjs';
+## Use the locally packed library
 
-const add = createAction('counter/add');
-const initialState = { count: 0 };
-const reducer = createReducer(initialState, {
+`npm pack` runs the type-checked build and creates `othmaneblial-fluxus-0.1.0.tgz` in the repository root. Install that file into a separate project:
+
+```bash
+npm pack
+mkdir ../fluxus-try
+cd ../fluxus-try
+npm init -y
+npm install ../fluxus/othmaneblial-fluxus-0.1.0.tgz
+```
+
+This TypeScript example is checked against the installed tarball by the [consumer test](test/consumer/check-package.mjs):
+
+```ts
+import { createAction, createReducer, createStore } from '@othmaneblial/fluxus';
+
+const add = createAction('counter/add').withPayload<number>();
+const reset = createAction('counter/reset');
+type CounterAction = ReturnType<typeof add> | ReturnType<typeof reset>;
+
+const initial = { count: 0 };
+const reducer = createReducer<typeof initial, CounterAction>(initial, {
   [add.type]: (state, action) => ({ count: state.count + action.payload }),
+  [reset.type]: () => initial,
 });
-const store = createStore(reducer, initialState);
+const store = createStore(reducer, initial);
+const unsubscribe = store.subscribe(() => console.log(store.getState().count));
 
-const unsubscribe = store.subscribe(() => {
-  console.log(store.getState().count);
-});
-store.dispatch(add(2)); // 2
+store.dispatch(add(2)); // prints 2
+store.select((state) => state.count); // 2
 unsubscribe();
 ```
 
-The [task workbench](examples/workbench.html) is the main browser demo. After a build, serve the repository root over HTTP (for example, `python3 -m http.server 8000`) and open `http://localhost:8000/examples/workbench.html`. It adds, filters and completes tasks while a separate observer can subscribe or detach; see the [reproducible walkthrough](docs/DEMO.md). The smaller [`examples/`](examples/) pages remain as recipes. They import `../dist/index.mjs` and are not yet a hosted public demo. `auth.html` is a **local session-state simulation**, not an authentication solution.
+The [getting started guide](docs/GETTING_STARTED.md) includes a runnable JavaScript consumer and common setup problems. The package offers ESM and CommonJS entry points, TypeScript declarations and no runtime dependencies; [packaging evidence](docs/PACKAGING.md) records the actual tarball checks. There is no CLI or native binary.
 
-## Choosing Fluxus
+## Contract and limits
 
-The current API favors named actions and one reducer over a mutable state setter. That can help when transitions should be easy to follow in a small framework-free interface. This is a design choice, not a measured advantage over other libraries. See the [source-backed comparison](docs/COMPARISON.md) for concrete trade-offs and the [`ROADMAP.md`](ROADMAP.md) for planned validation.
+| Capability | Current behavior |
+| --- | --- |
+| State transitions | Synchronous named actions handled by a reducer; `dispatch` notifies subscribers after a successful transition. |
+| Selectors | Derived values cached by selector function and state reference; use a stable selector function and immutable state updates. |
+| Middleware | Optional composition around dispatch. A middleware can inspect state, forward or suppress an action. |
+| Helpers | Shallow immutable updates, one-entry memoization, lazy values and a timing helper are optional exports. |
 
-## Contributing and license
+Fluxus keeps state only in memory. It has no persistence, authentication, server sync, React hook or DevTools integration. Its small API is useful when named transitions matter in a framework-free interface; Redux Toolkit and Zustand offer other trade-offs. See the [API reference](docs/API.md), [type contract](docs/TYPES.md), [integration decisions](docs/INTEGRATIONS.md), [source-backed comparison](docs/COMPARISON.md) and [measured workloads](docs/BENCHMARKS.md). The benchmark does not establish a general speed or memory advantage.
 
-Issues and pull requests are welcome. The contribution, security, test, and release guides are part of the roadmap and are not in place yet. Fluxus is licensed under the [MIT License](LICENSE).
+## Develop and contribute
+
+Use Node 22 or 24 and Yarn 1. `yarn verify` runs lint, type-check, 40 unit tests, the build and installed-tarball checks. The same suite passed locally under both Node versions; [validation evidence](docs/VALIDATION.md) distinguishes local checks from remote CI. Read the [roadmap](ROADMAP.md) for remaining release and adoption gates. Contribution and security guidance will be linked here when completed.
+
+Fluxus is licensed under the [MIT License](LICENSE).
