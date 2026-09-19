@@ -151,6 +151,7 @@ const output = {
   dateUtc: new Date().toISOString(),
   environment: {
     node: process.version,
+    nodeEnv: process.env.NODE_ENV ?? null,
     platform: os.platform(),
     arch: os.arch(),
     cpu: os.cpus()[0]?.model,

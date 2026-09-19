@@ -10,7 +10,7 @@ The package manifest currently says `@othmaneblial/fluxus@0.1.0`, but publicatio
 | Browser workbench | Local Chrome desktop and responsive widths 390/320 px; [browser QA](ACCESSIBILITY_QA.md) |
 | Other Node or browser versions | Not independently validated yet |
 
-The manifest's `node >=22` engine range expresses an installation floor. It does not mean every future Node version has passed the test suite. The library has no runtime dependencies; Redux Toolkit, Zustand and esbuild are development-only benchmark tools.
+The manifest's `node >=22` engine range expresses an installation floor. It does not mean every future Node version has passed the test suite. The library has no runtime dependencies. Redux Toolkit and Zustand are development-only benchmark tools; esbuild is used for the build, package consumer check and benchmarks.
 
 ## API changes
 

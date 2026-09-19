@@ -6,6 +6,8 @@ The unscoped `fluxus` name belongs to another project. The manifest uses `@othma
 
 Run `yarn build` and `yarn test:package` from the repository. `prepack` also runs the build for a normal `npm pack`. The package check creates a temporary consumer, packs the real distribution, asserts the tarball file list, installs the tarball without registry access, executes both module formats, compiles `.mts` and `.cts` fixtures against the installed declarations, and bundles only `memoize` for a browser with esbuild. The check cleans its own temporary workspace.
 
+The build uses esbuild for the CommonJS and ESM bundles and `dts-bundle-generator` for a checked, single-file TypeScript declaration. The latter is copied to `.d.mts` for NodeNext ESM consumers. TypeScript is pinned to `5.9.3` for declaration generation because a newer transitive compiler did not expose the API required by the generator; the installed consumer check verifies both declaration paths.
+
 On 19 September 2026, `npm pack --dry-run --json` listed exactly 9 entries: `LICENSE`, `README.md`, `package.json`, the two JavaScript outputs and their source maps, and the two declaration files. The packed tarball was about 11 KB in the local consumer checks; its exact size changes with the README. The bundle check confirmed that unrelated reducer code was absent from a single-helper import. This is evidence for one local setup, not a general size or performance claim.
 
 There is no CLI or native binary to download. A versioned npm tarball is the distribution artifact. Published package installation and the GitHub release archive remain pending release preparation and external verification.

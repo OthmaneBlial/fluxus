@@ -1,0 +1,202 @@
+{
+  "dateUtc": "2026-09-19T13:02:28.820Z",
+  "environment": {
+    "node": "v25.9.0",
+    "nodeEnv": null,
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M2",
+    "ramGiB": 16,
+    "versions": {
+      "Fluxus": "0.1.0",
+      "Redux Toolkit": "2.12.0",
+      "Zustand": "5.0.15",
+      "esbuild": "0.28.2"
+    }
+  },
+  "method": {
+    "iterationsPerTrial": 200000,
+    "warmupIterations": 20000,
+    "trials": 5,
+    "executionOrder": "One warmup per library/workload, then trials interleaved with rotated library order",
+    "timingUnit": "milliseconds; lower is faster",
+    "bundle": "Equivalent counter API, browser ESM, esbuild minified production define, gzip default",
+    "caveat": "Different store semantics and selector caching; microbenchmarks do not predict application performance."
+  },
+  "timings": {
+    "dispatch": {
+      "Fluxus": {
+        "samplesMs": [
+          365.014,
+          333.763,
+          85.929,
+          27.31,
+          18.94
+        ],
+        "medianMs": 85.929
+      },
+      "Redux Toolkit": {
+        "samplesMs": [
+          1565.124,
+          1676.164,
+          1515.411,
+          724.745,
+          437.198
+        ],
+        "medianMs": 1515.411
+      },
+      "Zustand": {
+        "samplesMs": [
+          74.786,
+          72.089,
+          238.535,
+          21.646,
+          20.854
+        ],
+        "medianMs": 72.089
+      }
+    },
+    "dispatchWithSubscriber": {
+      "Fluxus": {
+        "samplesMs": [
+          27.837,
+          20.933,
+          20.367,
+          19.913,
+          13.969
+        ],
+        "medianMs": 20.367
+      },
+      "Redux Toolkit": {
+        "samplesMs": [
+          325.769,
+          335.147,
+          260.204,
+          236.728,
+          203.368
+        ],
+        "medianMs": 260.204
+      },
+      "Zustand": {
+        "samplesMs": [
+          27.059,
+          19.555,
+          19.365,
+          16.099,
+          14.333
+        ],
+        "medianMs": 19.365
+      }
+    },
+    "subscribeUnsubscribe": {
+      "Fluxus": {
+        "samplesMs": [
+          18.049,
+          17.272,
+          17.398,
+          17.213,
+          17.397
+        ],
+        "medianMs": 17.397
+      },
+      "Redux Toolkit": {
+        "samplesMs": [
+          35.787,
+          34.947,
+          34.797,
+          33.808,
+          34.171
+        ],
+        "medianMs": 34.797
+      },
+      "Zustand": {
+        "samplesMs": [
+          17.535,
+          17.14,
+          17.538,
+          17.12,
+          17.537
+        ],
+        "medianMs": 17.535
+      }
+    },
+    "readState": {
+      "Fluxus": {
+        "samplesMs": [
+          1.503,
+          1.404,
+          1.425,
+          1.689,
+          1.659
+        ],
+        "medianMs": 1.503
+      },
+      "Redux Toolkit": {
+        "samplesMs": [
+          1.84,
+          1.788,
+          1.813,
+          2.021,
+          2.007
+        ],
+        "medianMs": 1.84
+      },
+      "Zustand": {
+        "samplesMs": [
+          1.708,
+          1.623,
+          1.625,
+          1.912,
+          1.917
+        ],
+        "medianMs": 1.708
+      }
+    },
+    "selectDerived": {
+      "Fluxus": {
+        "samplesMs": [
+          4.407,
+          3.792,
+          3.855,
+          3.785,
+          3.829
+        ],
+        "medianMs": 3.829
+      },
+      "Redux Toolkit": {
+        "samplesMs": [
+          6.837,
+          5.066,
+          5.188,
+          5.162,
+          5.199
+        ],
+        "medianMs": 5.188
+      },
+      "Zustand": {
+        "samplesMs": [
+          2.042,
+          1.887,
+          2.051,
+          2.045,
+          2.043
+        ],
+        "medianMs": 2.043
+      }
+    }
+  },
+  "bundles": {
+    "Fluxus": {
+      "minifiedBytes": 1720,
+      "gzipBytes": 763
+    },
+    "Redux Toolkit": {
+      "minifiedBytes": 23140,
+      "gzipBytes": 8934
+    },
+    "Zustand": {
+      "minifiedBytes": 437,
+      "gzipBytes": 297
+    }
+  }
+}

@@ -43,3 +43,11 @@ The contribution guide uses the same frozen Yarn install and `yarn verify` path 
 ## GitHub CI (19 September 2026)
 
 The first [Verify run](https://github.com/OthmaneBlial/fluxus/actions/runs/35444079229) completed with `success` at commit `1405522`. Its Node 22 and Node 24 jobs both completed successfully on GitHub-hosted Ubuntu runners: checkout, Node setup, Yarn 1.22.22 installation, frozen dependency installation and `yarn verify`. The workflow has `push` on `main`, `pull_request` and manual triggers with read-only repository contents permission. The push path is verified by this run; a real pull-request event has not been exercised. The repository's Dependabot version-update configuration covers npm/Yarn dependencies and GitHub Actions weekly, and the security settings showed Dependabot alerts enabled after the change. No automatic dependency-update PR result is claimed.
+
+## Dependency and build-tool update (19 September 2026)
+
+Enabling Dependabot alerts exposed 38 open alerts on the old lockfile, including two critical Vitest development-tool advisories. The build and test toolchain was updated: Vitest 4.1.11, Vite 8.3.0, ESLint 10.11.0, TypeScript 5.9.3, esbuild 0.28.2 and `dts-bundle-generator` 9.5.1. The vulnerable `tsup`/`sucrase` chain was removed. `yarn audit --json` exited zero with zero advisories across its reported 219-package dependency graph; GitHub's Dependabot API subsequently returned zero open alerts on `main`. These are point-in-time advisory results, not proof that every dependency is risk-free.
+
+The new build produces the same nine-file CJS/ESM/declaration tarball. A local Node 22.23.2 `yarn verify` passed all 40 tests and the installed consumer check. The [Verify run for commit `96eab7e`](https://github.com/OthmaneBlial/fluxus/actions/runs/35444547000) completed successfully for both Node 22 and 24 on GitHub-hosted Ubuntu. The API/package consumer check includes ESM, CJS, NodeNext `.mts`/`.cts` declarations and a browser single-helper bundle.
+
+After the build-tool update, the benchmark was repeated in three separate Node 25 processes with esbuild 0.28.2. The new raw runs and the preserved older snapshot are linked from [the benchmark report](BENCHMARKS.md). The broad spread between processes is kept visible; no general performance claim was added.
