@@ -4,7 +4,7 @@
 
 **Explicit state for small browser interfaces.** Fluxus is a framework-independent JavaScript/TypeScript store built around named actions, a reducer and subscriptions. It fits widgets or pages where several views need to agree on the same in-memory state.
 
-**Release status:** the scoped `@othmaneblial/fluxus` tarball has passed local consumer checks on Node 22 and 24, but this repository has **not published or verified it on npm**. The unscoped [`fluxus`](https://www.npmjs.com/package/fluxus) package belongs to another project. Use the source checkout or a locally packed tarball for now; do not install the unscoped package expecting this code.
+**Distribution:** the intended package is the scoped `@othmaneblial/fluxus`. Check that the exact version is visible on npm and in [GitHub Releases](https://github.com/OthmaneBlial/fluxus/releases) before installing it from the registry; until then, use the source checkout or a locally packed tarball. The unscoped [`fluxus`](https://www.npmjs.com/package/fluxus) package belongs to another project.
 
 ## Try the real demo
 
@@ -24,9 +24,15 @@ python3 -m http.server 8000
 
 Open `http://localhost:8000/examples/workbench.html`. The demo uses the built `dist/index.mjs`, local CSS and sample data; it makes no third-party network request and resets on reload. The smaller [examples](examples/) show a counter, task list, cart and **local session-state simulation**. The session page does not authenticate anyone.
 
-## Use the locally packed library
+## Install the library
 
-`npm pack` runs the type-checked build and creates `othmaneblial-fluxus-0.1.0.tgz` in the repository root. Install that file into a separate project:
+Once `@othmaneblial/fluxus@0.1.0` is visible and verified on npm, install that exact version:
+
+```bash
+npm install @othmaneblial/fluxus@0.1.0
+```
+
+For local use before a registry release, `npm pack` runs the type-checked build and creates `othmaneblial-fluxus-0.1.0.tgz` in the repository root. Install that file into a separate project:
 
 ```bash
 npm pack

@@ -1,6 +1,6 @@
 # Release procedure
 
-This procedure prepares a local artifact and describes the later external checks. As of 19 September 2026, `0.1.0` is a manifest version and release candidate; npm publication, a Git tag and a GitHub Release are not verified.
+This procedure prepares a local artifact and describes the external checks. A `package.json` version is not proof of npm publication, a Git tag or a GitHub Release; check those services directly.
 
 ## Prepare from a clean checkout
 
@@ -17,8 +17,8 @@ From the `release/` directory, `shasum -a 256 -c SHA256SUMS` must report the tar
 
 ## Publication gate
 
-Before publication, confirm the account controls the scoped name and that this exact version is available with `npm whoami` and `npm view @othmaneblial/fluxus@0.1.0`. Review the tarball and notes, obtain the requested publication approval, and use a secure npm publication mechanism. Prefer a short-lived trusted publishing identity and provenance when configured and verified; the current repository does not claim that setup. Do not print tokens or put them in Git, docs or release assets.
+Before publication, check that `npm config get registry` names the intended registry, `npm whoami` is `othmaneblial`, and `npm view @othmaneblial/fluxus@0.1.0` does not return an existing version. An `E404` alone cannot prove future publishing rights; check the scope in the npm account as well. Review the tarball and notes, obtain publication approval, then publish **that exact archive** with `npm publish release/othmaneblial-fluxus-0.1.0.tgz --access public` using existing authenticated npm access. A trusted publishing identity with provenance is preferable when configured and verified; the current repository does not claim that setup. Do not print tokens or put them in Git, docs or release assets.
 
-After publishing, verify the registry's name, version and tarball URL. Download that exact registry tarball, compare its SHA-256 with `release/SHA256SUMS`, install it in a fresh directory and repeat an ESM/CJS/TypeScript consumer check. Only then create the `v0.1.0` tag at the validated commit and a GitHub Release with [the notes](RELEASE_NOTES_0.1.0.md), the checked tarball and checksum. Verify the remote tag target, release assets and hashes, then update the README's install command and maturity statement. If a public demo is hosted, deploy the same tagged build and test its URL in a browser. A successful upload alone is not verification.
+After publishing, verify the registry's name, version and tarball URL. Download that exact registry tarball, compare its SHA-256 with `release/SHA256SUMS`, install it in a fresh directory and repeat an ESM/CJS/TypeScript consumer check. Only then create the `v0.1.0` tag at the validated commit and a GitHub Release with [the notes](RELEASE_NOTES_0.1.0.md), the checked tarball and checksum. Verify the remote tag target, release assets and hashes, then confirm the README's conditional registry instructions and current maturity statement remain accurate. If a public demo is hosted, deploy the same tagged build and test its URL in a browser. A successful upload alone is not verification.
 
 If npm ownership, publication, a clean consumer install, the tag, assets or a public demo check fails, leave the README and roadmap explicit about the unverified step. Do not claim a release from local CI or a `package.json` version alone.

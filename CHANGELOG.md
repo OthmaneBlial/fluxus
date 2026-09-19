@@ -1,12 +1,12 @@
 # Changelog
 
-Changes to published versions will be recorded here. The version below is a prepared release candidate, not evidence of an npm publication or GitHub Release.
+Changes to versions are recorded here. A version heading does not establish publication; check the npm registry and GitHub Releases for the current release status.
 
 ## Unreleased
 
 No changes are listed yet.
 
-## 0.1.0 — release candidate
+## 0.1.0
 
 - Added an explicit synchronous action/reducer/store contract with typed action unions, middleware, subscriptions and selector caching.
 - Hardened special action names, invalid actions, reducer failures, listener behavior, immutable helpers and selector memory behavior with 40 unit tests.

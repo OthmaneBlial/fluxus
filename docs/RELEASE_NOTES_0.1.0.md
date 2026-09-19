@@ -1,6 +1,6 @@
-# Fluxus 0.1.0 — release notes draft
+# Fluxus 0.1.0
 
-**Status:** local release candidate. This document is ready for review but does not claim a tag, npm publication or GitHub Release.
+These notes describe the tested package contents. Verify publication through the registry and GitHub Release rather than inferring it from this document.
 
 Fluxus is a small JavaScript/TypeScript state store for framework-free browser interfaces that need named transitions and several views of the same in-memory state. The [task workbench](../examples/workbench.html) demonstrates task actions updating a list, progress summary and detachable event observer.
 
@@ -18,6 +18,6 @@ State exists only in memory. There is no persistence, authentication, remote syn
 
 This is intended as the first published version under the scoped name `@othmaneblial/fluxus`. There is no migration from an earlier published version of this package. The unscoped `fluxus` name belongs to a different project.
 
-## Release artifacts to attach after approval
+## Release artifacts
 
-The [release check](RELEASE.md) prepares `release/othmaneblial-fluxus-0.1.0.tgz`, `release/SHA256SUMS` and `release/release-manifest.json` from a clean commit. Verify the checksum and install the **published exact version** in a fresh project before changing the README to an npm installation command. Report vulnerabilities through the [private channel](../SECURITY.md).
+The [release check](RELEASE.md) prepares `release/othmaneblial-fluxus-0.1.0.tgz`, `release/SHA256SUMS` and `release/release-manifest.json` from a clean commit. Verify the checksum and install the **published exact version** in a fresh project before treating the README's registry command as available. Report vulnerabilities through the [private channel](../SECURITY.md).
