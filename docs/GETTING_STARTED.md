@@ -1,6 +1,6 @@
 # Getting started from the repository
 
-The published `@othmaneblial/fluxus@0.1.0` was verified from the npm registry and in the GitHub Release. These instructions also retain a local tarball path for contributors. They were checked with Node 22.23.2 and 24.21.0 plus Yarn 1.22.22 on macOS; [GitHub CI results](VALIDATION.md#github-ci-19-september-2026) are recorded separately.
+The published `@othmaneblial/fluxus@0.1.0` was verified from the npm registry and in the GitHub Release. The current checkout prepares `0.1.1` as the next release candidate; these instructions retain a local tarball path for contributors. They were checked with Node 22.23.2 and 24.21.0 plus Yarn 1.22.22 on macOS; [GitHub CI results](VALIDATION.md#github-ci-19-september-2026) are recorded separately.
 
 For a new project, install the published package:
 
@@ -29,7 +29,7 @@ npm pack
 mkdir ../fluxus-try
 cd ../fluxus-try
 npm init -y
-npm install ../fluxus/othmaneblial-fluxus-0.1.0.tgz
+npm install ../fluxus/othmaneblial-fluxus-0.1.1.tgz
 ```
 
 Create `demo.mjs` in `fluxus-try`:

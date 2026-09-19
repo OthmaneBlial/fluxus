@@ -4,7 +4,7 @@
 
 **Explicit state for small browser interfaces.** Fluxus is a framework-independent JavaScript/TypeScript store built around named actions, a reducer and subscriptions. It fits widgets or pages where several views need to agree on the same in-memory state.
 
-**Distribution:** `@othmaneblial/fluxus@0.1.0` is published and its tarball is attached to the [GitHub Release](https://github.com/OthmaneBlial/fluxus/releases/tag/v0.1.0). The [public task workbench](https://othmaneblial.github.io/fluxus/) runs the tagged examples. The unscoped [`fluxus`](https://www.npmjs.com/package/fluxus) package belongs to another project.
+**Distribution:** `@othmaneblial/fluxus@0.1.1` is the next release candidate; the published and verified `0.1.0` remains available in [GitHub Releases](https://github.com/OthmaneBlial/fluxus/releases/tag/v0.1.0). The [public task workbench](https://othmaneblial.github.io/fluxus/) runs the verified tagged examples. The unscoped [`fluxus`](https://www.npmjs.com/package/fluxus) package belongs to another project.
 
 ## Try the real demo
 
@@ -32,14 +32,14 @@ Install the verified published version:
 npm install @othmaneblial/fluxus@0.1.0
 ```
 
-For local use before a registry release, `npm pack` runs the type-checked build and creates `othmaneblial-fluxus-0.1.0.tgz` in the repository root. Install that file into a separate project:
+For local use before a registry release, `npm pack` runs the type-checked build and creates `othmaneblial-fluxus-0.1.1.tgz` in the repository root. Install that file into a separate project:
 
 ```bash
 npm pack
 mkdir ../fluxus-try
 cd ../fluxus-try
 npm init -y
-npm install ../fluxus/othmaneblial-fluxus-0.1.0.tgz
+npm install ../fluxus/othmaneblial-fluxus-0.1.1.tgz
 ```
 
 This TypeScript example is checked against the installed tarball by the [consumer test](test/consumer/check-package.mjs):
