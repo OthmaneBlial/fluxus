@@ -15,7 +15,7 @@ Fluxus is a small, framework-independent state store built around explicit actio
 The [helper contracts](docs/HELPERS.md) state their cache limits and shallow-copy behavior.
 For a TypeScript action union and checked dispatch, see the [typed example](docs/TYPES.md).
 
-Fluxus does **not** currently provide persistence, real authentication, a network layer, a React hook, or DevTools integration. Its performance and memory use have not been compared in a reproducible benchmark. [Product scope](docs/PRODUCT_SCOPE.md) explains the intended first release and its limits.
+Fluxus does **not** currently provide persistence, real authentication, a network layer, a React hook, or DevTools integration. A [local benchmark](docs/BENCHMARKS.md) records specific workloads and bundle sizes; it does not establish a general performance or memory advantage. [Product scope](docs/PRODUCT_SCOPE.md) explains the intended first release and its limits.
 
 ## Try the source checkout
 

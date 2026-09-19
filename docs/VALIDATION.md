@@ -23,3 +23,7 @@ These checks are local. No CI run, package installation by a separate consumer, 
 Two more store tests cover an exception from a subscriber after state commit and a selector that throws before a value can be cached. A reducer test proves an own `__proto__` handler runs while inherited names remain ignored. The package consumer test rejects an unexported subpath with `ERR_PACKAGE_PATH_NOT_EXPORTED`.
 
 `yarn verify` passed in the checkout and in a separate temporary copy after `yarn install --frozen-lockfile --non-interactive`: lint, type-check, 40 unit tests, build, and installed-tarball checks. The separate copy had been created without `node_modules/` or `dist/`; its dependency install was first performed for the phase 2.1 clean check, then revalidated against the current manifest and lockfile before this run. This is a local suite, not evidence of GitHub CI or another operating system.
+
+## Benchmarks (19 September 2026)
+
+Redux Toolkit, Zustand and esbuild were added as pinned development dependencies. The benchmark script completed three separate 200,000-operation runs per workload with five rotated trials each, and saved raw JSON results in `bench/results/`. The GC-forced cache profile was also saved. The environment, measured ranges, semantic differences and limitations are in [BENCHMARKS.md](BENCHMARKS.md). After the dependency change, `yarn verify` passed again locally with 40 tests and the 9-file installed tarball check.

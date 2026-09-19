@@ -17,7 +17,9 @@
       }
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
   "engines": {
     "node": ">=22"
@@ -28,6 +30,7 @@
   },
   "scripts": {
     "build": "yarn type-check && tsup",
+    "benchmark": "yarn build && node bench/run.mjs",
     "test": "vitest run",
     "test:package": "node test/consumer/check-package.mjs",
     "test:watch": "vitest",
@@ -45,13 +48,16 @@
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "9.9.0",
+    "@reduxjs/toolkit": "2.12.0",
     "@types/node": "^22.4.2",
     "@typescript-eslint/eslint-plugin": "^8.2.0",
     "@typescript-eslint/parser": "^8.2.0",
+    "esbuild": "0.23.1",
     "eslint": "^9.9.0",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
-    "vitest": "^2.0.5"
+    "vitest": "^2.0.5",
+    "zustand": "5.0.15"
   },
   "repository": {
     "type": "git",

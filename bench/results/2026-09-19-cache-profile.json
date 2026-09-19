@@ -1,0 +1,12 @@
+{
+  "node": "v25.9.0",
+  "iterationsAfterWarmup": 100000,
+  "heapMiB": [
+    3.01,
+    3.88,
+    3.88,
+    3.88,
+    3.88
+  ],
+  "note": "One local GC-forced run; inspect the trend, not an absolute memory guarantee."
+}
