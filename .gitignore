@@ -5,6 +5,7 @@ node_modules/
 dist/
 build/
 *.tgz
+release/
 
 # TypeScript cache
 *.tsbuildinfo
@@ -45,9 +46,6 @@ yarn-error.log*
 
 # Vitest
 vitest.config.ts.timestamp-*
-
-# tsup
-tsup.config.ts.timestamp-*
 
 # Cache directories
 .cache/
