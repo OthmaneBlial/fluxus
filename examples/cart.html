@@ -81,15 +81,25 @@
             const cartItemsElement = document.getElementById('cartItems');
             const totalElement = document.getElementById('total');
 
-            cartItemsElement.innerHTML = items.map(item => `
-                <li class="flex justify-between items-center bg-gray-100 p-2 rounded">
-                    <span>${item.name} - $${item.price}</span>
-                    <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-sm transition duration-300"
-                            onclick="removeItemFromCart(${item.id})">
-                        Remove
-                    </button>
-                </li>
-            `).join('');
+            const fragment = document.createDocumentFragment();
+            for (const item of items) {
+                const row = document.createElement('li');
+                row.className = 'flex justify-between items-center bg-gray-100 p-2 rounded';
+
+                const name = document.createElement('span');
+                name.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.className = 'bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-sm transition duration-300';
+                removeButton.textContent = 'Remove';
+                removeButton.setAttribute('aria-label', `Remove ${item.name}`);
+                removeButton.addEventListener('click', () => store.dispatch(removeItem(item.id)));
+
+                row.append(name, removeButton);
+                fragment.append(row);
+            }
+            cartItemsElement.replaceChildren(fragment);
 
             totalElement.textContent = total.toFixed(2);
         }
@@ -114,11 +124,6 @@
         document.getElementById('clearCart').addEventListener('click', () => {
             store.dispatch(clearCart());
         });
-
-        // Function to remove item from cart
-        window.removeItemFromCart = (id) => {
-            store.dispatch(removeItem(id));
-        };
 
         // Initial UI update
         updateUI();

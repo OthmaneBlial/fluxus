@@ -40,11 +40,12 @@
 
         // Define initial state
         const initialState = { todos: [] };
+        let nextTodoId = 1;
 
         // Define reducer
         const todoReducer = createReducer(initialState, {
             [addTodo.type]: (state, action) => ({
-                todos: [...state.todos, { id: Date.now(), text: action.payload, completed: false }]
+                todos: [...state.todos, action.payload]
             }),
             [removeTodo.type]: (state, action) => ({
                 todos: state.todos.filter(todo => todo.id !== action.payload)
@@ -65,18 +66,34 @@
             const todoList = document.getElementById('todoList');
             const todoCount = document.getElementById('todoCount');
 
-            todoList.innerHTML = todos.map(todo => `
-                <li class="flex items-center bg-gray-50 p-2 rounded">
-                    <input type="checkbox" ${todo.completed ? 'checked' : ''}
-                           onchange="toggleTodoItem(${todo.id})"
-                           class="mr-2 form-checkbox h-5 w-5 text-blue-600">
-                    <span class="${todo.completed ? 'line-through text-gray-500' : 'text-gray-800'}">${todo.text}</span>
-                    <button onclick="removeTodoItem(${todo.id})"
-                            class="ml-auto bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-sm transition duration-300">
-                        Remove
-                    </button>
-                </li>
-            `).join('');
+            const fragment = document.createDocumentFragment();
+            for (const todo of todos) {
+                const item = document.createElement('li');
+                item.className = 'flex items-center bg-gray-50 p-2 rounded';
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `todo-${todo.id}`;
+                checkbox.checked = todo.completed;
+                checkbox.className = 'mr-2 form-checkbox h-5 w-5 text-blue-600';
+                checkbox.addEventListener('change', () => store.dispatch(toggleTodo(todo.id)));
+
+                const label = document.createElement('label');
+                label.htmlFor = checkbox.id;
+                label.textContent = todo.text;
+                label.className = todo.completed ? 'line-through text-gray-500' : 'text-gray-800';
+
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.className = 'ml-auto bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-sm transition duration-300';
+                removeButton.textContent = 'Remove';
+                removeButton.setAttribute('aria-label', `Remove ${todo.text}`);
+                removeButton.addEventListener('click', () => store.dispatch(removeTodo(todo.id)));
+
+                item.append(checkbox, label, removeButton);
+                fragment.append(item);
+            }
+            todoList.replaceChildren(fragment);
 
             const completedCount = todos.filter(todo => todo.completed).length;
             todoCount.textContent = `${completedCount} out of ${todos.length} tasks completed`;
@@ -91,19 +108,10 @@
             const todoInput = document.getElementById('todoInput');
             const newTodo = todoInput.value.trim();
             if (newTodo) {
-                store.dispatch(addTodo(newTodo));
+                store.dispatch(addTodo({ id: nextTodoId++, text: newTodo, completed: false }));
                 todoInput.value = ''; // Clear input after adding
             }
         });
-
-        // Global functions for toggle and remove (since they're used in the HTML)
-        window.toggleTodoItem = (id) => {
-            store.dispatch(toggleTodo(id));
-        };
-
-        window.removeTodoItem = (id) => {
-            store.dispatch(removeTodo(id));
-        };
 
         // Initial UI update
         updateUI();

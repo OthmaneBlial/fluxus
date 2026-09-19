@@ -25,7 +25,7 @@ Fluxus should provide a compact, predictable **in-memory action/reducer store** 
 ## Limits and explicit non-goals
 
 - State is in memory and is lost on reload. Persistence, server sync, offline data recovery, and network requests are not provided.
-- The store is not an authentication system. A browser-only page cannot verify credentials; the present `auth.html` must be removed or recast as a session-state simulation.
+- The store is not an authentication system. A browser-only page cannot verify credentials; `auth.html` now demonstrates only local session state with a display name and no password.
 - There is no built-in React/Vue/Svelte binding, time-travel debugger, async workflow engine, or store DevTools integration. Any adapter should be separate from the core and justified by observed demand.
 - Reducers are expected to return a new state instead of mutating the existing object. The exact invariant and error handling must be specified and tested before release.
 - Package availability is not inferred from `package.json`: the unscoped npm name `fluxus` is occupied by an unrelated package. Choose and verify a publishable name before writing public installation instructions.

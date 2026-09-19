@@ -47,7 +47,7 @@ store.dispatch(add(2)); // 2
 unsubscribe();
 ```
 
-The [`examples/`](examples/) directory contains browser pages. They require a build and a local HTTP server because they import `../dist/index.mjs`. The examples are being hardened before they are promoted as a public demo; the current `auth.html` is **not** an authentication solution.
+The [`examples/`](examples/) directory contains browser pages. They require a build and a local HTTP server because they import `../dist/index.mjs`. The examples are being hardened before they are promoted as a public demo; `auth.html` is a **local session-state simulation**, not an authentication solution.
 
 ## Choosing Fluxus
 
