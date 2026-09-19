@@ -146,6 +146,7 @@ store.subscribe(renderList);
 store.subscribe(renderSummary);
 let unsubscribeObserver = store.subscribe(observe);
 
+taskInput.addEventListener('input', () => { formFeedback.textContent = ''; });
 document.getElementById('taskForm').addEventListener('submit', (event) => {
   event.preventDefault();
   const text = taskInput.value.trim();

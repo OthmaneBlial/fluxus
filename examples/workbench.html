@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Try Fluxus in a real task workspace: one store, explicit actions, multiple live views and a detachable observer.">
   <title>Task workbench · Fluxus</title>
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=2">
   <link rel="stylesheet" href="./workbench.css">
 </head>
 <body>
@@ -81,7 +81,7 @@
         </section>
 
         <section class="observer-card" aria-labelledby="observer-title">
-          <div class="observer-topline"><span class="live-dot" aria-hidden="true"></span><span id="observerStatus">Observer subscribed</span></div>
+          <div class="observer-topline"><span class="live-dot" aria-hidden="true"></span><span id="observerStatus" role="status">Observer subscribed</span></div>
           <div class="observer-heading">
             <div>
               <p class="section-kicker">Independent subscriber</p>

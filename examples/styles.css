@@ -5,7 +5,7 @@
   --ink: #1e2a2b;
   --muted: #5d696a;
   --line: #d8d0c3;
-  --accent: #c75236;
+  --accent: #bd4c31;
   --accent-dark: #a93c24;
   --teal: #116978;
   --wash: #e9e3d7;
@@ -157,7 +157,7 @@ input[type="text"], input[type="number"] {
   padding: 10px 14px;
   color: var(--ink);
   background: #fff;
-  border: 1px solid #9eaaa6;
+  border: 1px solid #697a75;
   border-radius: 3px;
   outline: 0;
 }
@@ -165,7 +165,7 @@ input:focus-visible, button:focus-visible, a:focus-visible {
   outline: 3px solid var(--teal);
   outline-offset: 3px;
 }
-input::placeholder { color: #7d8785; }
+input::placeholder { color: var(--muted); }
 button.primary, button.secondary, button.text-button, button.danger {
   min-height: 46px;
   border-radius: 3px;

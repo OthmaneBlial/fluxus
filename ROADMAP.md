@@ -40,7 +40,7 @@ Le README et `Redux vs Fluxus.md` revendiquent de meilleures performances, moins
 - [x] 2.4 Tests des frontières et du paquet — 40 tests sur comportements et erreurs, contrôle type positif/négatif, sous-chemin npm privé rejeté et `yarn verify` réussi après installation gelée en copie séparée (`docs/VALIDATION.md`).
 - [x] 2.5 Benchmarks — harnais reproductible, trois exécutions brutes, tailles bundle, profil mémoire limité et compromis consignés dans `docs/BENCHMARKS.md` ; aucune supériorité générale revendiquée.
 - [x] 3.1 Démo principale — workbench réel avec tâches, filtres, compteurs dérivés, observateur détachable et reset ; parcours navigateur/console/rechargement consignés dans `docs/DEMO.md`.
-- [ ] 3.2 Rendu, accessibilité et mobile
+- [x] 3.2 Rendu, accessibilité et mobile — vues desktop/390/320 px inspectées, parcours clavier et états vide/erreur vérifiés, audit DOM/contraste local et corrections consignés dans `docs/ACCESSIBILITY_QA.md`.
 - [ ] 3.3 Décision sur les intégrations
 - [ ] 4.1 README et guides
 - [ ] 4.2 Preuves visuelles
