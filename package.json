@@ -29,13 +29,13 @@
     "access": "public"
   },
   "scripts": {
-    "build": "yarn type-check && tsup",
+    "build": "yarn type-check && node scripts/build.mjs",
     "benchmark": "yarn build && node bench/run.mjs",
     "docs:links": "node scripts/check-doc-links.mjs",
     "test": "vitest run",
     "test:package": "node test/consumer/check-package.mjs",
     "test:watch": "vitest",
-    "lint": "eslint src test bench scripts examples/*.js tsup.config.ts vitest.config.mts eslint.config.cjs",
+    "lint": "eslint src test bench scripts examples/*.js vitest.config.mts eslint.config.cjs",
     "type-check": "tsc -p tsconfig.json --noEmit",
     "verify": "yarn lint && yarn docs:links && yarn type-check && yarn test && yarn build && yarn test:package",
     "prepack": "yarn build"
@@ -47,17 +47,21 @@
   ],
   "author": "Othmane BLIAL",
   "license": "MIT",
+  "resolutions": {
+    "dts-bundle-generator/typescript": "5.9.3"
+  },
   "devDependencies": {
-    "@eslint/js": "9.9.0",
+    "@eslint/js": "10.0.1",
     "@reduxjs/toolkit": "2.12.0",
-    "@types/node": "^22.4.2",
-    "@typescript-eslint/eslint-plugin": "^8.2.0",
-    "@typescript-eslint/parser": "^8.2.0",
-    "esbuild": "0.23.1",
-    "eslint": "^9.9.0",
-    "tsup": "^8.2.4",
-    "typescript": "^5.5.4",
-    "vitest": "^2.0.5",
+    "@types/node": "22.20.4",
+    "@typescript-eslint/eslint-plugin": "8.70.0",
+    "@typescript-eslint/parser": "8.70.0",
+    "dts-bundle-generator": "9.5.1",
+    "esbuild": "0.28.2",
+    "eslint": "10.11.0",
+    "typescript": "5.9.3",
+    "vite": "8.3.0",
+    "vitest": "4.1.11",
     "zustand": "5.0.15"
   },
   "repository": {
