@@ -33,7 +33,8 @@ jobs:
           set -eu
           PACKAGE_VERSION="$(node -p 'require("./package.json").version')"
           test "$RELEASE_TAG" = "v$PACKAGE_VERSION"
-          test "$(npm view "@othmaneblial/fluxus@$PACKAGE_VERSION" version)" = "$PACKAGE_VERSION"
+          PUBLISHED_VERSION="$(curl --fail --silent --show-error 'https://registry.npmjs.org/@othmaneblial%2ffluxus/latest' | node -e 'const fs = require("node:fs"); process.stdout.write(JSON.parse(fs.readFileSync(0, "utf8")).version)')"
+          test "$PUBLISHED_VERSION" = "$PACKAGE_VERSION"
       - name: Install Yarn 1
         run: npm install --global yarn@1.22.22
       - name: Verify tagged source
