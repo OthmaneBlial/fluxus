@@ -6,7 +6,9 @@ Changes to versions are recorded here. A version heading does not establish publ
 
 No changes are listed yet.
 
-## 0.1.0
+## 0.1.0 — 19 September 2026
+
+Published as [`@othmaneblial/fluxus@0.1.0`](https://www.npmjs.com/package/@othmaneblial/fluxus), with the checked tarball attached to [GitHub Release v0.1.0](https://github.com/OthmaneBlial/fluxus/releases/tag/v0.1.0). The [public workbench](https://othmaneblial.github.io/fluxus/) is built from the verified tag.
 
 - Added an explicit synchronous action/reducer/store contract with typed action unions, middleware, subscriptions and selector caching.
 - Hardened special action names, invalid actions, reducer failures, listener behavior, immutable helpers and selector memory behavior with 40 unit tests.

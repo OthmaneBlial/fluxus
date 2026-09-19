@@ -1,6 +1,6 @@
 # Fluxus 0.1.0
 
-These notes describe the tested package contents. Verify publication through the registry and GitHub Release rather than inferring it from this document.
+The package, registry tarball, GitHub Release and public workbench were verified on 19 September 2026. The registry tarball and release asset share SHA-256 `26de30bf41f610082e68a3d2e0a3d45bc722ea2ce9e3a25f0f1f22103bb2a21e`.
 
 Fluxus is a small JavaScript/TypeScript state store for framework-free browser interfaces that need named transitions and several views of the same in-memory state. The [task workbench](../examples/workbench.html) demonstrates task actions updating a list, progress summary and detachable event observer.
 
@@ -20,4 +20,8 @@ This is intended as the first published version under the scoped name `@othmaneb
 
 ## Release artifacts
 
-The [release check](RELEASE.md) prepares `release/othmaneblial-fluxus-0.1.0.tgz`, `release/SHA256SUMS` and `release/release-manifest.json` from a clean commit. Verify the checksum and install the **published exact version** in a fresh project before treating the README's registry command as available. Report vulnerabilities through the [private channel](../SECURITY.md).
+The [release check](RELEASE.md) prepares `release/othmaneblial-fluxus-0.1.0.tgz`, `release/SHA256SUMS` and `release/release-manifest.json` from a clean commit. The checked copies are attached to the [GitHub Release](https://github.com/OthmaneBlial/fluxus/releases/tag/v0.1.0). Install the published exact version in a fresh project and report vulnerabilities through the [private channel](../SECURITY.md).
+
+## Live demo
+
+Open the [public task workbench](https://othmaneblial.github.io/fluxus/) to see one store drive the task list, progress summary and detachable event observer. State is in memory and resets on reload.
