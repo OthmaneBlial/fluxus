@@ -1,6 +1,6 @@
 # Product scope for the first credible release
 
-This document began as a product decision against commit `5ab9472` on 19 September 2026. The core, types, tarball and browser workbench are now implemented and checked locally; a published release and independent usage are still unverified.
+This document began as a product decision against commit `5ab9472` on 19 September 2026. The core, types, tarball and browser workbench are implemented and checked locally; the published `0.1.0` release and public demo are now verified, while independent usage is still an open gate.
 
 ## Intended user and job
 
@@ -28,7 +28,7 @@ Fluxus provides a compact, predictable **in-memory action/reducer store** usable
 - The store is not an authentication system. A browser-only page cannot verify credentials; `auth.html` now demonstrates only local session state with a display name and no password.
 - There is no built-in React/Vue/Svelte binding, time-travel debugger, async workflow engine, or store DevTools integration. Any adapter should be separate from the core and justified by observed demand.
 - Reducers must return a new state instead of mutating the existing object. Error behavior is specified in the [core contract](CORE_CONTRACT.md); runtime mutation is not prevented.
-- Package availability is not inferred from `package.json`: the unscoped npm name `fluxus` is occupied by an unrelated package. The manifest uses `@othmaneblial/fluxus`, but publication is not verified.
+- Package availability is not inferred from `package.json`: the unscoped npm name `fluxus` is occupied by an unrelated package. The manifest uses `@othmaneblial/fluxus`; `0.1.0` is verified through the npm registry and its release tarball.
 
 ## Release decision gates
 

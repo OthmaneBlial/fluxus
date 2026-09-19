@@ -1,6 +1,12 @@
 # Getting started from the repository
 
-The npm package has not been published or verified yet. These instructions use the actual repository and a locally built tarball of `@othmaneblial/fluxus`. They were checked with Node 22.23.2 and 24.21.0 plus Yarn 1.22.22 on macOS; [GitHub CI results](VALIDATION.md#github-ci-19-september-2026) are recorded separately.
+The published `@othmaneblial/fluxus@0.1.0` was verified from the npm registry and in the GitHub Release. These instructions also retain a local tarball path for contributors. They were checked with Node 22.23.2 and 24.21.0 plus Yarn 1.22.22 on macOS; [GitHub CI results](VALIDATION.md#github-ci-19-september-2026) are recorded separately.
+
+For a new project, install the published package:
+
+```bash
+npm install @othmaneblial/fluxus@0.1.0
+```
 
 ## Run the browser example
 

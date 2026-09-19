@@ -47,9 +47,9 @@ Le README et `Redux vs Fluxus.md` revendiquent de meilleures performances, moins
 - [x] 4.3 Contribution et confiance — guides, politique de compatibilité, templates et canal GitHub de signalement privé publiés ; liens/YAML contrôlés, sélecteur d'issues et formulaire de bug vérifiés sans créer d'issue.
 - [x] 5.1 CI — `yarn verify` réussi sur GitHub Actions Node 22/24 et Ubuntu 24.04 pour `main`, parcours PR réel observé, badge public chargé ; Dependabot hebdomadaire configuré, alertes activées et zéro alerte ouverte après mise à jour de la chaîne de build.
 - [x] 5.2 Artefacts et notes de version — `CHANGELOG.md`, notes, procédure et `release:check` présents ; tarball local final de 11 756 octets et SHA-256 vérifiés, essai npm à blanc et installation isolée réussis. La comparaison avec un artefact **publié/joint** reste le contrôle de 5.3.
-- [ ] 5.3 Publication et vérification externes — contrôle npm à blanc et workflow Pages manuel prêts ; aucune publication npm, tag, GitHub Release ou démo hébergée n'est vérifiée.
-- [ ] 6.1 Usages indépendants
-- [ ] 6.2 Présentation et découverte — description/topics GitHub corrigés, aperçu social authentique chargé, introduction préparée dans `docs/LAUNCH_COPY.md` et prévisualisation Pages testée localement ; lien de démo publique et partage attendent la release vérifiée.
+- [x] 5.3 Publication et vérification externes — `@othmaneblial/fluxus@0.1.0` publié puis téléchargé depuis npm avec SHA-256 identique ; `v0.1.0`, GitHub Release et assets pointent vers `69d1ed8` ; GitHub Pages a été activé, le workflow tag-gated a réussi (`35446052920`) et l’URL publique a été testée.
+- [ ] 6.1 Usages indépendants — protocole et tableau préparés dans `docs/USER_FEEDBACK.md`, mais aucun des trois parcours indépendants n’est encore consigné.
+- [ ] 6.2 Présentation et découverte — description/topics GitHub corrigés, aperçu social authentique chargé, homepage réglée sur la démo publique et introduction préparée dans `docs/LAUNCH_COPY.md` ; le partage auprès de communautés et son retour vérifiable restent à faire après 6.1.
 - [ ] 7.1 Capture et montage vidéo
 - [ ] 7.2 Vérification du média livré
 
