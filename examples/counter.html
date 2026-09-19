@@ -1,75 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fluxus Counter Example</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A minimal counter built with a Fluxus store and named actions.">
+  <title>Counter · Fluxus examples</title>
+  <link rel="stylesheet" href="./styles.css">
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <div class="bg-white p-8 rounded-lg shadow-md text-center">
-        <h1 class="text-3xl font-bold mb-6 text-gray-800">Fluxus Counter</h1>
-        <p class="text-xl mb-4">Count: <span id="count" class="font-bold text-blue-600">0</span></p>
-        <div class="space-x-4">
-            <button id="increment" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
-                Increment
-            </button>
-            <button id="decrement" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
-                Decrement
-            </button>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./todo.html"><span class="brand-mark" aria-hidden="true">F</span> Fluxus</a>
+    <nav class="site-nav" aria-label="Examples">
+      <a href="./todo.html">Tasks</a>
+      <a href="./counter.html" aria-current="page">Counter</a>
+      <a href="./cart.html">Cart</a>
+      <a href="./auth.html">Session</a>
+    </nav>
+  </header>
+  <main class="demo-layout">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">02 / the smallest loop</p>
+      <h1 id="page-title">Count the change.</h1>
+      <p>Two actions enter one reducer. The display subscribes to the resulting state.</p>
+      <div class="intro-meta"><span>Named actions</span><span>One subscriber</span></div>
+    </section>
+    <section class="workspace" aria-labelledby="workspace-title">
+      <div class="workspace-head">
+        <h2 id="workspace-title">Counter</h2>
+        <span class="section-kicker">Live state</span>
+      </div>
+      <div class="workspace-body">
+        <p class="workspace-note">Choose a step, then dispatch a change.</p>
+        <div class="count-display" role="status" aria-live="polite">
+          <strong id="count">0</strong><span>current count</span>
         </div>
-        <div class="mt-6">
-            <input type="number" id="stepInput" class="border rounded px-2 py-1 w-20 text-center" value="1" min="1">
-            <label for="stepInput" class="ml-2 text-gray-700">Step Size</label>
+        <div class="button-row">
+          <button class="primary" id="increment" type="button">Increase</button>
+          <button class="secondary" id="decrement" type="button">Decrease</button>
         </div>
-    </div>
+        <div class="step-field">
+          <label for="stepInput">Step size</label>
+          <input id="stepInput" type="number" value="1" min="1" step="1" inputmode="numeric">
+        </div>
+        <p class="footnote">The store exists only in this tab. Reload to start again.</p>
+      </div>
+    </section>
+  </main>
+  <script type="module">
+    import { createStore, createAction, createReducer } from '../dist/index.mjs';
 
-    <script type="module">
-        import * as Fluxus from '../dist/index.mjs';
+    const increment = createAction('INCREMENT');
+    const decrement = createAction('DECREMENT');
+    const initialState = { count: 0 };
+    const reducer = createReducer(initialState, {
+      [increment.type]: (state, action) => ({ count: state.count + action.payload }),
+      [decrement.type]: (state, action) => ({ count: state.count - action.payload }),
+    });
+    const store = createStore(reducer, initialState);
+    const count = document.getElementById('count');
+    const stepInput = document.getElementById('stepInput');
+    const render = () => { count.textContent = String(store.getState().count); };
+    const getStep = () => {
+      const value = Number(stepInput.value);
+      return Number.isSafeInteger(value) && value > 0 ? value : 1;
+    };
 
-        const { createStore, createAction, createReducer } = Fluxus;
-
-        // Define actions
-        const increment = createAction('INCREMENT');
-        const decrement = createAction('DECREMENT');
-
-        // Define initial state
-        const initialState = { count: 0 };
-
-        // Define reducer
-        const counterReducer = createReducer(initialState, {
-            [increment.type]: (state, action) => ({ count: state.count + action.payload }),
-            [decrement.type]: (state, action) => ({ count: state.count - action.payload }),
-        });
-
-        // Create store
-        const store = createStore(counterReducer, initialState);
-
-        // Update UI
-        function updateUI() {
-            const currentState = store.getState();
-            document.getElementById('count').textContent = currentState.count;
-        }
-
-        // Subscribe to state changes
-        store.subscribe(updateUI);
-
-        // Get step size
-        function getStepSize() {
-            return parseInt(document.getElementById('stepInput').value) || 1;
-        }
-
-        // Add event listeners
-        document.getElementById('increment').addEventListener('click', () => {
-            store.dispatch(increment(getStepSize()));
-        });
-
-        document.getElementById('decrement').addEventListener('click', () => {
-            store.dispatch(decrement(getStepSize()));
-        });
-
-        // Initial UI update
-        updateUI();
-    </script>
+    store.subscribe(render);
+    document.getElementById('increment').addEventListener('click', () => store.dispatch(increment(getStep())));
+    document.getElementById('decrement').addEventListener('click', () => store.dispatch(decrement(getStep())));
+    render();
+  </script>
 </body>
 </html>

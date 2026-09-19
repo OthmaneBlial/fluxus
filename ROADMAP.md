@@ -33,7 +33,7 @@ Le README et `Redux vs Fluxus.md` revendiquent de meilleures performances, moins
 - [x] 1.1 Contrat actions/réducteurs — forme exacte, clés héritées et états `undefined` couverts ; 18 tests, type-check et build réussis localement.
 - [x] 1.2 Dispatchs, abonnements et middlewares — contrat unique, ordre/erreurs/réentrance/notifications testés ; aucun journal d'état par défaut.
 - [x] 1.3 Helpers et mémoire — clés ajoutées, symboles et tableaux creux testés ; cache à une entrée, sélecteurs faibles et profil mémoire local documentés.
-- [ ] 1.4 Exemples sûrs — injections DOM et faux formulaire d'authentification corrigés et vérifiés dans le navigateur ; remplacement du CDN et contrôle visuel restant.
+- [x] 1.4 Exemples sûrs — texte DOM, session sans mot de passe, styles locaux et contrôles navigateur/390 px consignés dans `docs/EXAMPLE_QA.md`.
 - [ ] 2.1 TypeScript, lint et build
 - [ ] 2.2 Types publics
 - [ ] 2.3 Paquet consommable

@@ -1,18 +1,24 @@
 // Diagnostic only: V8 heap samples are noisy and are not a performance claim.
 import { createStore, memoize } from '../dist/index.mjs';
 
-if (typeof global.gc !== 'function') {
+const collectGarbage = global.gc;
+if (typeof collectGarbage !== 'function') {
   throw new Error('Run with node --expose-gc bench/cache-profile.mjs after yarn build');
 }
 
-const store = createStore((state) => state, { value: 42 });
+const initialState = { value: 42 };
+const store = createStore((state = initialState) => state, initialState);
 const latestValue = memoize((state) => state.value);
 
 function heapMiB() {
-  global.gc();
+  if (typeof collectGarbage !== 'function') {
+    throw new Error('Garbage collection is unavailable');
+  }
+  collectGarbage();
   return Number((process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2));
 }
 
+/** @param {number} count */
 function exercise(count) {
   for (let index = 0; index < count; index += 1) {
     latestValue({ value: index });

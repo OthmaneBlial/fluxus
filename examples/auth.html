@@ -1,66 +1,84 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fluxus Session State Example</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A Fluxus example for local session display state, with no authentication.">
+  <title>Session state · Fluxus examples</title>
+  <link rel="stylesheet" href="./styles.css">
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
-    <main class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <p class="text-sm font-semibold text-blue-700 uppercase tracking-wide mb-3">State example</p>
-        <h1 class="text-3xl font-bold mb-4 text-gray-800">Session state</h1>
-        <p class="text-gray-600 mb-6">This page only demonstrates switching local UI state. It does not authenticate users or check access.</p>
-
-        <form id="startForm" class="space-y-4">
-            <label for="displayName" class="block text-sm font-medium text-gray-700">Display name</label>
-            <input type="text" id="displayName" name="displayName" required maxlength="60" autocomplete="off"
-                   class="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md">
-            <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded">Start local session</button>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./todo.html"><span class="brand-mark" aria-hidden="true">F</span> Fluxus</a>
+    <nav class="site-nav" aria-label="Examples">
+      <a href="./todo.html">Tasks</a>
+      <a href="./counter.html">Counter</a>
+      <a href="./cart.html">Cart</a>
+      <a href="./auth.html" aria-current="page">Session</a>
+    </nav>
+  </header>
+  <main class="demo-layout">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">04 / local state only</p>
+      <h1 id="page-title">Start fresh.</h1>
+      <p>A name changes the visible session panel. The browser reload clears it again.</p>
+      <div class="intro-meta"><span>No credentials</span><span>No access check</span></div>
+    </section>
+    <section class="workspace" aria-labelledby="workspace-title">
+      <div class="workspace-head">
+        <h2 id="workspace-title">Session state</h2>
+        <span class="section-kicker">Simulation</span>
+      </div>
+      <div class="workspace-body">
+        <p class="notice">This is a local UI-state example. It does not authenticate a person or grant access.</p>
+        <form id="startForm" class="entry-form">
+          <label for="displayName">Display name</label>
+          <input type="text" id="displayName" name="displayName" maxlength="60" autocomplete="off" placeholder="Enter a name" required>
+          <button class="primary" type="submit">Start local session</button>
         </form>
-
-        <section id="sessionPanel" hidden aria-live="polite">
-            <h2 class="text-xl font-semibold text-gray-800 mb-3">Hello, <span id="currentName"></span></h2>
-            <p class="text-gray-600 mb-5">This state disappears when the page reloads.</p>
-            <button type="button" id="endSession" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">End local session</button>
+        <section id="sessionPanel" class="session-panel" hidden aria-live="polite">
+          <h3>Hello, <span id="currentName"></span></h3>
+          <p>This state exists only in memory and disappears on reload.</p>
+          <button class="danger" type="button" id="endSession">End local session</button>
         </section>
-    </main>
+      </div>
+    </section>
+  </main>
+  <script type="module">
+    import { createStore, createAction, createReducer } from '../dist/index.mjs';
 
-    <script type="module">
-        import { createStore, createAction, createReducer } from '../dist/index.mjs';
+    const startSession = createAction('SESSION_START');
+    const endSession = createAction('SESSION_END');
+    const initialState = { displayName: null };
+    const reducer = createReducer(initialState, {
+      [startSession.type]: (_state, action) => ({ displayName: action.payload }),
+      [endSession.type]: () => initialState,
+    });
+    const store = createStore(reducer, initialState);
+    const startForm = document.getElementById('startForm');
+    const sessionPanel = document.getElementById('sessionPanel');
+    const currentName = document.getElementById('currentName');
+    const displayName = document.getElementById('displayName');
 
-        const startSession = createAction('SESSION_START');
-        const endSession = createAction('SESSION_END');
-        const initialState = { displayName: null };
-        const reducer = createReducer(initialState, {
-            [startSession.type]: (_state, action) => ({ displayName: action.payload }),
-            [endSession.type]: () => initialState,
-        });
-        const store = createStore(reducer, initialState);
-        const startForm = document.getElementById('startForm');
-        const sessionPanel = document.getElementById('sessionPanel');
-        const currentName = document.getElementById('currentName');
-        const displayName = document.getElementById('displayName');
+    function render() {
+      const name = store.getState().displayName;
+      startForm.hidden = name !== null;
+      sessionPanel.hidden = name === null;
+      currentName.textContent = name ?? '';
+    }
 
-        function render() {
-            const name = store.getState().displayName;
-            startForm.hidden = name !== null;
-            sessionPanel.hidden = name === null;
-            currentName.textContent = name ?? '';
-        }
-
-        store.subscribe(render);
-        startForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const name = displayName.value.trim();
-            if (name) store.dispatch(startSession(name));
-        });
-        document.getElementById('endSession').addEventListener('click', () => {
-            store.dispatch(endSession());
-            displayName.value = '';
-            displayName.focus();
-        });
-        render();
-    </script>
+    store.subscribe(render);
+    startForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = displayName.value.trim();
+      if (name) store.dispatch(startSession(name));
+    });
+    document.getElementById('endSession').addEventListener('click', () => {
+      store.dispatch(endSession());
+      displayName.value = '';
+      displayName.focus();
+    });
+    render();
+  </script>
 </body>
 </html>

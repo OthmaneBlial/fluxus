@@ -1,120 +1,108 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fluxus Todo List Example</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A small, real browser example of Fluxus actions, reducers, and subscriptions.">
+  <title>Tasks · Fluxus examples</title>
+  <link rel="stylesheet" href="./styles.css">
 </head>
-<body class="bg-gray-100 min-h-screen p-8">
-    <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
-        <h1 class="text-3xl font-bold mb-6 text-gray-800 text-center">Fluxus Todo List</h1>
-        
-        <form id="todoForm" class="mb-6">
-            <div class="flex">
-                <input type="text" id="todoInput" placeholder="Add a new todo" required
-                       class="flex-grow px-3 py-2 bg-white border border-gray-300 rounded-l-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                <button type="submit" id="addTodo" 
-                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r-md transition duration-300">
-                    Add
-                </button>
-            </div>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./todo.html"><span class="brand-mark" aria-hidden="true">F</span> Fluxus</a>
+    <nav class="site-nav" aria-label="Examples">
+      <a href="./todo.html" aria-current="page">Tasks</a>
+      <a href="./counter.html">Counter</a>
+      <a href="./cart.html">Cart</a>
+      <a href="./auth.html">Session</a>
+    </nav>
+  </header>
+  <main class="demo-layout">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">01 / action → reducer → view</p>
+      <h1 id="page-title">Make it a task.</h1>
+      <p>One store keeps the list and its count in sync. Add a task, mark it done, then remove it.</p>
+      <div class="intro-meta"><span>In-memory</span><span>Plain JavaScript</span></div>
+    </section>
+    <section class="workspace" aria-labelledby="workspace-title">
+      <div class="workspace-head">
+        <h2 id="workspace-title">Task list</h2>
+        <span class="section-kicker">Live state</span>
+      </div>
+      <div class="workspace-body">
+        <form id="todoForm" class="entry-form">
+          <label for="todoInput">New task</label>
+          <div class="input-row">
+            <input type="text" id="todoInput" placeholder="Try: review the pull request" maxlength="160" required>
+            <button class="primary" type="submit">Add task</button>
+          </div>
         </form>
+        <ul id="todoList" class="item-list" aria-label="Tasks"></ul>
+        <p id="todoCount" class="footnote" role="status"></p>
+      </div>
+    </section>
+  </main>
+  <script type="module">
+    import { createStore, createAction, createReducer } from '../dist/index.mjs';
 
-        <ul id="todoList" class="space-y-2"></ul>
+    const addTodo = createAction('ADD_TODO');
+    const removeTodo = createAction('REMOVE_TODO');
+    const toggleTodo = createAction('TOGGLE_TODO');
+    const initialState = { todos: [] };
+    let nextTodoId = 1;
+    const reducer = createReducer(initialState, {
+      [addTodo.type]: (state, action) => ({ todos: [...state.todos, action.payload] }),
+      [removeTodo.type]: (state, action) => ({ todos: state.todos.filter((todo) => todo.id !== action.payload) }),
+      [toggleTodo.type]: (state, action) => ({
+        todos: state.todos.map((todo) =>
+          todo.id === action.payload ? { ...todo, completed: !todo.completed } : todo),
+      }),
+    });
+    const store = createStore(reducer, initialState);
+    const todoList = document.getElementById('todoList');
+    const todoCount = document.getElementById('todoCount');
+    const todoInput = document.getElementById('todoInput');
 
-        <div class="mt-6 text-center">
-            <p id="todoCount" class="text-gray-600"></p>
-        </div>
-    </div>
+    function render() {
+      const { todos } = store.getState();
+      const fragment = document.createDocumentFragment();
+      for (const todo of todos) {
+        const row = document.createElement('li');
+        row.className = 'task-row';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `todo-${todo.id}`;
+        checkbox.checked = todo.completed;
+        checkbox.className = 'task-check';
+        checkbox.addEventListener('change', () => store.dispatch(toggleTodo(todo.id)));
+        const label = document.createElement('label');
+        label.htmlFor = checkbox.id;
+        label.textContent = todo.text;
+        label.className = todo.completed ? 'task-label complete' : 'task-label';
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'text-button';
+        removeButton.textContent = 'Remove';
+        removeButton.setAttribute('aria-label', `Remove ${todo.text}`);
+        removeButton.addEventListener('click', () => store.dispatch(removeTodo(todo.id)));
+        row.append(checkbox, label, removeButton);
+        fragment.append(row);
+      }
+      todoList.replaceChildren(fragment);
+      const completed = todos.filter((todo) => todo.completed).length;
+      todoCount.textContent = `${completed} of ${todos.length} tasks completed`;
+    }
 
-    <script type="module">
-        import * as Fluxus from '../dist/index.mjs';
-
-        const { createStore, createAction, createReducer } = Fluxus;
-
-        // Define actions
-        const addTodo = createAction('ADD_TODO');
-        const removeTodo = createAction('REMOVE_TODO');
-        const toggleTodo = createAction('TOGGLE_TODO');
-
-        // Define initial state
-        const initialState = { todos: [] };
-        let nextTodoId = 1;
-
-        // Define reducer
-        const todoReducer = createReducer(initialState, {
-            [addTodo.type]: (state, action) => ({
-                todos: [...state.todos, action.payload]
-            }),
-            [removeTodo.type]: (state, action) => ({
-                todos: state.todos.filter(todo => todo.id !== action.payload)
-            }),
-            [toggleTodo.type]: (state, action) => ({
-                todos: state.todos.map(todo =>
-                    todo.id === action.payload ? { ...todo, completed: !todo.completed } : todo
-                )
-            })
-        });
-
-        // Create store
-        const store = createStore(todoReducer, initialState);
-
-        // Update UI
-        function updateUI() {
-            const { todos } = store.getState();
-            const todoList = document.getElementById('todoList');
-            const todoCount = document.getElementById('todoCount');
-
-            const fragment = document.createDocumentFragment();
-            for (const todo of todos) {
-                const item = document.createElement('li');
-                item.className = 'flex items-center bg-gray-50 p-2 rounded';
-
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = `todo-${todo.id}`;
-                checkbox.checked = todo.completed;
-                checkbox.className = 'mr-2 form-checkbox h-5 w-5 text-blue-600';
-                checkbox.addEventListener('change', () => store.dispatch(toggleTodo(todo.id)));
-
-                const label = document.createElement('label');
-                label.htmlFor = checkbox.id;
-                label.textContent = todo.text;
-                label.className = todo.completed ? 'line-through text-gray-500' : 'text-gray-800';
-
-                const removeButton = document.createElement('button');
-                removeButton.type = 'button';
-                removeButton.className = 'ml-auto bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-sm transition duration-300';
-                removeButton.textContent = 'Remove';
-                removeButton.setAttribute('aria-label', `Remove ${todo.text}`);
-                removeButton.addEventListener('click', () => store.dispatch(removeTodo(todo.id)));
-
-                item.append(checkbox, label, removeButton);
-                fragment.append(item);
-            }
-            todoList.replaceChildren(fragment);
-
-            const completedCount = todos.filter(todo => todo.completed).length;
-            todoCount.textContent = `${completedCount} out of ${todos.length} tasks completed`;
-        }
-
-        // Subscribe to state changes
-        store.subscribe(updateUI);
-
-        // Add event listeners
-        document.getElementById('todoForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const todoInput = document.getElementById('todoInput');
-            const newTodo = todoInput.value.trim();
-            if (newTodo) {
-                store.dispatch(addTodo({ id: nextTodoId++, text: newTodo, completed: false }));
-                todoInput.value = ''; // Clear input after adding
-            }
-        });
-
-        // Initial UI update
-        updateUI();
-    </script>
+    store.subscribe(render);
+    document.getElementById('todoForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const text = todoInput.value.trim();
+      if (!text) return;
+      store.dispatch(addTodo({ id: nextTodoId++, text, completed: false }));
+      todoInput.value = '';
+      todoInput.focus();
+    });
+    render();
+  </script>
 </body>
 </html>

@@ -47,7 +47,7 @@ store.dispatch(add(2)); // 2
 unsubscribe();
 ```
 
-The [`examples/`](examples/) directory contains browser pages. They require a build and a local HTTP server because they import `../dist/index.mjs`. The examples are being hardened before they are promoted as a public demo; `auth.html` is a **local session-state simulation**, not an authentication solution.
+The [`examples/`](examples/) directory contains browser pages with local styles. After a build, serve the repository root over HTTP (for example, `python3 -m http.server 8000`) and open `http://localhost:8000/examples/todo.html`. They import `../dist/index.mjs`. The pages have been [checked locally](docs/EXAMPLE_QA.md), but are not yet a hosted product demo; `auth.html` is a **local session-state simulation**, not an authentication solution.
 
 ## Choosing Fluxus
 
