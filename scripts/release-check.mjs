@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const releaseDir = resolve(root, 'release');
 const env = { ...process.env, NPM_TOKEN: process.env.NPM_TOKEN ?? 'unused' };
+const registryBase = (process.env.FLUXUS_REGISTRY_URL ?? 'https://registry.npmjs.org').replace(/\/$/, '');
 const expectedFiles = [
   'LICENSE', 'README.md', 'package.json',
   'dist/index.js', 'dist/index.js.map', 'dist/index.mjs', 'dist/index.mjs.map',
@@ -23,6 +24,12 @@ function command(name, args, options = {}) {
     throw new Error(`${name} ${args.join(' ')} failed: ${result.error ?? result.stderr ?? result.status}`);
   }
   return result.stdout;
+}
+
+function commandResult(name, args, options = {}) {
+  return spawnSync(name, args, {
+    cwd: root, env, encoding: 'utf8', ...options,
+  });
 }
 
 const changes = command('git', ['status', '--porcelain']);
@@ -61,14 +68,36 @@ const archivedManifest = JSON.parse(command('tar', ['-xOf', tarball, 'package/pa
 assert.equal(archivedManifest.name, manifest.name);
 assert.equal(archivedManifest.version, manifest.version);
 
-const publishDryRun = JSON.parse(command('npm', [
+const sha256 = createHash('sha256').update(bytes).digest('hex');
+
+const publishDryRunResult = commandResult('npm', [
   'publish', `./release/${packed.filename}`, '--access', 'public',
   '--dry-run', '--ignore-scripts', '--json',
-]));
-assert.equal(publishDryRun.id, `${manifest.name}@${manifest.version}`);
-assert.equal(publishDryRun.filename, packed.filename);
-assert.equal(publishDryRun.size, bytes.length);
-assert.deepEqual(publishDryRun.files.map((file) => file.path).sort(), expectedFiles);
+]);
+if (publishDryRunResult.status === 0) {
+  const publishDryRun = JSON.parse(publishDryRunResult.stdout)[0] ?? JSON.parse(publishDryRunResult.stdout);
+  assert.equal(publishDryRun.id, `${manifest.name}@${manifest.version}`);
+  assert.equal(publishDryRun.filename, packed.filename);
+  assert.equal(publishDryRun.size, bytes.length);
+  assert.deepEqual(publishDryRun.files.map((file) => file.path).sort(), expectedFiles);
+  console.log('npm publish --dry-run passed for an unpublished version.');
+} else {
+  const metadataResponse = await globalThis.fetch(`${registryBase}/${encodeURIComponent(manifest.name)}/${manifest.version}`);
+  if (!metadataResponse.ok) {
+    throw new Error(`npm publish --dry-run failed and registry metadata was unavailable (${metadataResponse.status})`);
+  }
+  const metadata = await metadataResponse.json();
+  assert.equal(metadata.name, manifest.name);
+  assert.equal(metadata.version, manifest.version);
+  assert.ok(metadata.dist?.tarball, 'Published package metadata must expose a tarball URL');
+  const remoteResponse = await globalThis.fetch(metadata.dist.tarball);
+  if (!remoteResponse.ok) {
+    throw new Error(`Published tarball download failed with HTTP ${remoteResponse.status}`);
+  }
+  const remoteBytes = new Uint8Array(await remoteResponse.arrayBuffer());
+  assert.equal(createHash('sha256').update(remoteBytes).digest('hex'), sha256);
+  console.log(`npm version already published; registry tarball matches SHA-256 ${sha256}.`);
+}
 
 const consumer = await mkdtemp(join(tmpdir(), 'fluxus-release-'));
 try {
@@ -84,7 +113,6 @@ try {
   await rm(consumer, { recursive: true, force: true });
 }
 
-const sha256 = createHash('sha256').update(bytes).digest('hex');
 await writeFile(join(releaseDir, 'SHA256SUMS'), `${sha256}  ${packed.filename}\n`);
 await writeFile(join(releaseDir, 'release-manifest.json'), `${JSON.stringify({
   name: manifest.name,
