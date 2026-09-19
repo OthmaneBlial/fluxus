@@ -61,6 +61,15 @@ const archivedManifest = JSON.parse(command('tar', ['-xOf', tarball, 'package/pa
 assert.equal(archivedManifest.name, manifest.name);
 assert.equal(archivedManifest.version, manifest.version);
 
+const publishDryRun = JSON.parse(command('npm', [
+  'publish', `./release/${packed.filename}`, '--access', 'public',
+  '--dry-run', '--ignore-scripts', '--json',
+]));
+assert.equal(publishDryRun.id, `${manifest.name}@${manifest.version}`);
+assert.equal(publishDryRun.filename, packed.filename);
+assert.equal(publishDryRun.size, bytes.length);
+assert.deepEqual(publishDryRun.files.map((file) => file.path).sort(), expectedFiles);
+
 const consumer = await mkdtemp(join(tmpdir(), 'fluxus-release-'));
 try {
   await writeFile(join(consumer, 'package.json'), JSON.stringify({
