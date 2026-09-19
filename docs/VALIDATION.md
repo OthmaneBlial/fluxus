@@ -12,4 +12,8 @@ These checks are local. No CI run, package installation by a separate consumer, 
 
 ## Public types (19 September 2026)
 
-`yarn type-check` compiled `test/types/public-contract.ts`, including expected failures for wrong payloads, missing payloads, an unknown dispatched action and an invalid selector field. `yarn lint`, 37 runtime tests and `yarn build` passed. The generated `dist/index.d.ts` and `dist/index.d.mts` were inspected for the same action, reducer, middleware and store signatures. An installed-tarball check is still required in roadmap task 2.3.
+`yarn type-check` compiled `test/types/public-contract.ts`, including expected failures for wrong payloads, missing payloads, an unknown dispatched action and an invalid selector field. `yarn lint`, 37 runtime tests and `yarn build` passed. The generated `dist/index.d.ts` and `dist/index.d.mts` were inspected for the same action, reducer, middleware and store signatures. The later installed-tarball check is recorded below.
+
+## Package consumer (19 September 2026)
+
+`npm pack --dry-run --json` ran `prepack` and listed only 9 intended files. `yarn test:package` installed the resulting tarball in a temporary consumer and passed ESM/CJS runtime imports, `.mts`/`.cts` TypeScript resolution, and a browser esbuild check for a single helper. See [the package contract](PACKAGING.md). This check used the local Node runtime; the GitHub CI matrix is still pending.

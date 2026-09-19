@@ -2,7 +2,7 @@
 
 Fluxus is a small, framework-independent state store built around explicit actions and reducers. It is intended for JavaScript and TypeScript interfaces that need to share predictable in-memory state without adopting a UI framework.
 
-**Status:** early development. The package manifest says `0.1.0`, but this repository has not yet verified a release of this code on npm. The unscoped npm name [`fluxus`](https://www.npmjs.com/package/fluxus) currently points to a different project. Do not use `npm install fluxus` to install this repository. See [the roadmap](ROADMAP.md) for the work required before a release.
+**Status:** early development. The manifest now uses `@othmaneblial/fluxus`, but this repository has not published or verified that package on npm. The unscoped npm name [`fluxus`](https://www.npmjs.com/package/fluxus) points to a different project. Do not use `npm install fluxus` to install this repository. See the [package checks](docs/PACKAGING.md) and [roadmap](ROADMAP.md) before relying on a release.
 
 ## What it does
 

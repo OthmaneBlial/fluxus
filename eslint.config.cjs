@@ -22,6 +22,10 @@ module.exports = [
     languageOptions: { globals: { global: 'readonly', process: 'readonly', console: 'readonly' } },
   },
   {
+    files: ['test/consumer/**/*.mjs'],
+    languageOptions: { globals: { process: 'readonly', console: 'readonly' } },
+  },
+  {
     files: ['eslint.config.cjs'],
     languageOptions: { globals: { require: 'readonly', module: 'readonly' } },
   },
