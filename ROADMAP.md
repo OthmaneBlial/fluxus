@@ -46,7 +46,7 @@ Le README et `Redux vs Fluxus.md` revendiquent de meilleures performances, moins
 - [x] 4.2 Preuves visuelles — captures réelles initiale/après actions/mobile et couverture issue de la capture, avec dimensions, hash et source dans `docs/assets/README.md` ; images chargées dans le README et le guide GitHub publics. Aucune démo hébergée n'est annoncée.
 - [x] 4.3 Contribution et confiance — guides, politique de compatibilité, templates et canal GitHub de signalement privé publiés ; liens/YAML contrôlés, sélecteur d'issues et formulaire de bug vérifiés sans créer d'issue.
 - [x] 5.1 CI — `yarn verify` réussi sur GitHub Actions Node 22/24 et Ubuntu 24.04 pour `main`, parcours PR réel observé, badge public chargé ; Dependabot hebdomadaire configuré, alertes activées et zéro alerte ouverte après mise à jour de la chaîne de build.
-- [ ] 5.2 Artefacts et notes de version — `CHANGELOG.md`, notes, procédure et `release:check` présents ; tarball local de 11 695 octets et SHA-256 vérifiés, installation isolée réussie. Le hash de l'artefact **joint** reste à contrôler lors de 5.3.
+- [ ] 5.2 Artefacts et notes de version — `CHANGELOG.md`, notes, procédure et `release:check` présents ; tarball local final de 11 756 octets et SHA-256 vérifiés, installation isolée réussie. Le hash de l'artefact **joint** reste à contrôler lors de 5.3.
 - [ ] 5.3 Publication et vérification externes
 - [ ] 6.1 Usages indépendants
 - [ ] 6.2 Présentation et découverte — description/topics GitHub corrigés, aperçu social authentique chargé et introduction préparée dans `docs/LAUNCH_COPY.md` ; lien de démo publique et partage attendent la release vérifiée.
