@@ -1,0 +1,70 @@
+name: Demo Pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Verified release tag to deploy
+        required: true
+        default: v0.1.0
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fluxus-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Require the published version
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          set -eu
+          PACKAGE_VERSION="$(node -p 'require("./package.json").version')"
+          test "$RELEASE_TAG" = "v$PACKAGE_VERSION"
+          test "$(npm view "@othmaneblial/fluxus@$PACKAGE_VERSION" version)" = "$PACKAGE_VERSION"
+      - name: Install Yarn 1
+        run: npm install --global yarn@1.22.22
+      - name: Verify tagged source
+        run: |
+          yarn install --frozen-lockfile --non-interactive
+          yarn verify
+        env:
+          NPM_TOKEN: unused
+      - name: Stage the real examples
+        run: |
+          set -eu
+          mkdir -p site/dist
+          cp pages/index.html site/index.html
+          cp -R examples site/examples
+          cp dist/index.mjs dist/index.mjs.map site/dist/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
