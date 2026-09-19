@@ -1,9 +1,4 @@
 {
-    "extends": "./tsconfig.test.json",
-    "compilerOptions": {
-      "allowJs": true,
-      "checkJs": true,
-      "rootDir": "."
-    },
-    "include": ["."]
-  }
+  "extends": "./tsconfig.test.json",
+  "include": ["src/**/*.ts", "test/**/*.ts", "*.ts", "*.mts"]
+}

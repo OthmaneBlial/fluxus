@@ -14,7 +14,7 @@ export class Store<S> implements IStore<S> {
   private state: S;
   private reducer: Reducer<S>;
   private listeners: Set<() => void> = new Set();
-  private memoizedSelectors: WeakMap<Function, Function> = new WeakMap();
+  private memoizedSelectors = new WeakMap<(state: S) => unknown, (state: S) => unknown>();
   private isReducing = false;
 
   /**
@@ -86,10 +86,12 @@ export class Store<S> implements IStore<S> {
    * @returns The result of the selector function.
    */
   select<R>(selector: (state: S) => R): R {
-    if (!this.memoizedSelectors.has(selector)) {
-      this.memoizedSelectors.set(selector, memoize(selector));
+    let cached = this.memoizedSelectors.get(selector);
+    if (!cached) {
+      cached = memoize(selector);
+      this.memoizedSelectors.set(selector, cached);
     }
-    return (this.memoizedSelectors.get(selector) as Function)(this.state);
+    return cached(this.state) as R;
   }
 
   /**

@@ -34,7 +34,7 @@ Le README et `Redux vs Fluxus.md` revendiquent de meilleures performances, moins
 - [x] 1.2 Dispatchs, abonnements et middlewares — contrat unique, ordre/erreurs/réentrance/notifications testés ; aucun journal d'état par défaut.
 - [x] 1.3 Helpers et mémoire — clés ajoutées, symboles et tableaux creux testés ; cache à une entrée, sélecteurs faibles et profil mémoire local documentés.
 - [x] 1.4 Exemples sûrs — texte DOM, session sans mot de passe, styles locaux et contrôles navigateur/390 px consignés dans `docs/EXAMPLE_QA.md`.
-- [ ] 2.1 TypeScript, lint et build
+- [x] 2.1 TypeScript, lint et build — installation gelée sans `dist/`, lint, type-check, 36 tests et build réussis ; une erreur de type injectée dans une copie fait échouer `yarn build` (`docs/VALIDATION.md`).
 - [ ] 2.2 Types publics
 - [ ] 2.3 Paquet consommable
 - [ ] 2.4 Tests des frontières et du paquet
