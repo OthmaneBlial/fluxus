@@ -8,6 +8,10 @@
 
 The [task workbench](examples/workbench.html) adds, filters, completes and removes tasks. Its list, progress summary and detachable event observer read one store. The [walkthrough](docs/DEMO.md) explains the state transitions and exact expected results.
 
+![The real local task workbench showing three sample tasks, progress derived from the same store and a separate event observer](docs/assets/workbench-initial.png)
+
+This screenshot is from the built local demo. [See the state after two real actions and the mobile layout](docs/DEMO.md#captured-states).
+
 ```bash
 git clone https://github.com/OthmaneBlial/fluxus.git
 cd fluxus

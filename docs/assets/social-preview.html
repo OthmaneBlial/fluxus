@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fluxus social preview</title>
+    <style>
+      * { box-sizing: border-box; }
+      html, body { margin: 0; width: 100%; height: 100%; }
+      body { background: #f5f1e9; color: #222d2f; font-family: Georgia, 'Times New Roman', serif; }
+      .canvas { position: relative; width: 1280px; height: 640px; overflow: hidden; background: radial-gradient(circle at 80% 12%, #e5f1f0 0, transparent 37%), #f8f5ee; }
+      .canvas::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 42px, rgba(31, 49, 53, .045) 42px 43px); pointer-events: none; }
+      .stripe { position: absolute; inset: 0 0 auto; height: 7px; background: repeating-linear-gradient(90deg, #a64e3c 0 54px, #243b42 54px 108px, #4a7180 108px 162px, #e3d8c7 162px 216px); }
+      .copy { position: absolute; left: 72px; top: 62px; width: 440px; }
+      .brand { display: flex; align-items: center; gap: 16px; font: 800 29px/1.1 Arial, sans-serif; letter-spacing: -.04em; }
+      .mark { display: grid; place-items: center; width: 42px; height: 42px; transform: rotate(-8deg); background: #26343a; color: #fff; font: 800 26px Georgia, serif; }
+      .eyebrow { margin: 62px 0 12px; color: #9e4639; font: 700 14px/1.4 monospace; letter-spacing: .18em; text-transform: uppercase; }
+      h1 { margin: 0; font-size: 69px; line-height: 1.02; letter-spacing: -.052em; }
+      h1 em { display: block; color: #ae5140; font-weight: 400; }
+      .description { width: 400px; margin: 24px 0 0; font: 20px/1.45 Arial, sans-serif; color: #445255; }
+      .footer { position: absolute; left: 72px; bottom: 48px; border-top: 2px solid #25363b; padding-top: 16px; font: 700 14px/1.4 monospace; text-transform: uppercase; letter-spacing: .07em; }
+      .frame { position: absolute; top: 58px; right: -30px; width: 712px; height: 540px; padding: 11px; overflow: hidden; border: 1px solid #25363b; border-radius: 12px; background: #fff; box-shadow: 0 24px 44px rgba(27, 42, 46, .23); transform: rotate(-2deg); }
+      .frame img { display: block; width: 1280px; height: 1231px; max-width: none; transform: translate(-540px, -445px) scale(.96); transform-origin: top left; }
+      .caption { position: absolute; right: 38px; bottom: 26px; z-index: 2; padding: 8px 11px; border: 1px solid #25363b; background: #f8f5ee; color: #25363b; font: 700 12px/1 monospace; text-transform: uppercase; letter-spacing: .08em; }
+    </style>
+  </head>
+  <body>
+    <main class="canvas">
+      <div class="stripe" aria-hidden="true"></div>
+      <div class="copy">
+        <div class="brand"><span class="mark" aria-hidden="true">F</span> Fluxus</div>
+        <p class="eyebrow">A real local demo</p>
+        <h1>One state.<em>Every view.</em></h1>
+        <p class="description">Explicit state for small browser interfaces.</p>
+      </div>
+      <p class="footer">Actions → reducer → subscribers</p>
+      <div class="frame"><img src="workbench-initial.png" alt="Actual Fluxus task workbench screenshot" /></div>
+      <p class="caption">Screenshot from the workbench</p>
+    </main>
+  </body>
+</html>
