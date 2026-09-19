@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Try Fluxus in a real task workspace: one store, explicit actions, multiple live views and a detachable observer.">
+  <title>Task workbench · Fluxus</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./workbench.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./workbench.html"><span class="brand-mark" aria-hidden="true">F</span> Fluxus</a>
+    <nav class="site-nav" aria-label="Examples">
+      <a href="./workbench.html" aria-current="page">Workbench</a>
+      <a href="./todo.html">Tasks</a>
+      <a href="./counter.html">Counter</a>
+      <a href="./cart.html">Cart</a>
+      <a href="./auth.html">Session</a>
+    </nav>
+  </header>
+
+  <main class="workbench-shell">
+    <section class="workbench-hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">A live example / plain JavaScript</p>
+        <h1 id="page-title">One state.<br><em>Every view.</em></h1>
+        <p class="hero-copy">A list, progress summary and event observer stay in sync through one small store. Change a task and watch the same transition reach each view.</p>
+      </div>
+      <div class="hero-note" aria-label="Demo scope">
+        <span class="hero-note-number">01</span>
+        <span>Actions → reducer<br>→ subscribers</span>
+        <small>Runs locally. Reloading restores the sample.</small>
+      </div>
+    </section>
+
+    <div class="workbench-grid">
+      <section class="workspace task-workspace" aria-labelledby="tasks-title">
+        <div class="workspace-head">
+          <div>
+            <p class="section-kicker">Shared state / task workspace</p>
+            <h2 id="tasks-title">Today’s work</h2>
+          </div>
+          <button id="resetButton" class="text-button" type="button">Reset sample</button>
+        </div>
+        <div class="workspace-body">
+          <form id="taskForm" class="entry-form">
+            <label for="taskInput">Add a task</label>
+            <div class="input-row">
+              <input id="taskInput" type="text" maxlength="120" placeholder="Try: ship the release notes" autocomplete="off" required>
+              <button class="primary" type="submit">Add task</button>
+            </div>
+            <p id="formFeedback" class="form-feedback" role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="list-toolbar">
+            <div class="filter-group" role="group" aria-label="Filter tasks">
+              <button type="button" data-filter="all" aria-pressed="true">All <span id="allCount">3</span></button>
+              <button type="button" data-filter="open" aria-pressed="false">Open <span id="openCount">2</span></button>
+              <button type="button" data-filter="done" aria-pressed="false">Done <span id="doneCount">1</span></button>
+            </div>
+          </div>
+          <ul id="taskList" class="workbench-list" aria-label="Filtered tasks"></ul>
+          <p id="emptyMessage" class="empty-message" hidden>No tasks in this view. Add one or choose another filter.</p>
+          <p class="footnote">Task data lives in memory only. No account, sync or persistence is implied.</p>
+        </div>
+      </section>
+
+      <aside class="inspector" aria-label="Store inspector">
+        <section class="summary-card" aria-labelledby="summary-title">
+          <div class="inspector-head">
+            <p class="section-kicker">Derived from the same store</p>
+            <h2 id="summary-title">Progress</h2>
+          </div>
+          <div class="progress-numbers">
+            <div><strong id="remainingCount">2</strong><span>remaining</span></div>
+            <div><strong id="completedCount">1</strong><span>completed</span></div>
+          </div>
+          <div class="progress-track" role="progressbar" aria-label="Tasks completed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33"><span id="progressFill"></span></div>
+          <p id="progressText" class="summary-note" role="status">1 of 3 tasks complete</p>
+        </section>
+
+        <section class="observer-card" aria-labelledby="observer-title">
+          <div class="observer-topline"><span class="live-dot" aria-hidden="true"></span><span id="observerStatus">Observer subscribed</span></div>
+          <div class="observer-heading">
+            <div>
+              <p class="section-kicker">Independent subscriber</p>
+              <h2 id="observer-title">Event trace</h2>
+            </div>
+            <button id="observerButton" type="button" class="observer-toggle">Pause</button>
+          </div>
+          <ol id="eventList" class="event-list" aria-live="polite" aria-label="Recent actions"></ol>
+          <p id="traceHint" class="trace-hint">Dispatch an action to see a real state transition here.</p>
+          <p class="observer-note">Pause detaches only this observer. The task list and progress still update.</p>
+        </section>
+
+        <details class="state-details">
+          <summary>Inspect current state</summary>
+          <pre id="stateOutput" aria-label="Current store state"></pre>
+        </details>
+      </aside>
+    </div>
+  </main>
+  <script type="module" src="./workbench.js"></script>
+</body>
+</html>

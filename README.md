@@ -48,7 +48,7 @@ store.dispatch(add(2)); // 2
 unsubscribe();
 ```
 
-The [`examples/`](examples/) directory contains browser pages with local styles. After a build, serve the repository root over HTTP (for example, `python3 -m http.server 8000`) and open `http://localhost:8000/examples/todo.html`. They import `../dist/index.mjs`. The pages have been [checked locally](docs/EXAMPLE_QA.md), but are not yet a hosted product demo; `auth.html` is a **local session-state simulation**, not an authentication solution.
+The [task workbench](examples/workbench.html) is the main browser demo. After a build, serve the repository root over HTTP (for example, `python3 -m http.server 8000`) and open `http://localhost:8000/examples/workbench.html`. It adds, filters and completes tasks while a separate observer can subscribe or detach; see the [reproducible walkthrough](docs/DEMO.md). The smaller [`examples/`](examples/) pages remain as recipes. They import `../dist/index.mjs` and are not yet a hosted public demo. `auth.html` is a **local session-state simulation**, not an authentication solution.
 
 ## Choosing Fluxus
 
