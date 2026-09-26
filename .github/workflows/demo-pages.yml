@@ -50,7 +50,7 @@ jobs:
           cp pages/index.html site/index.html
           cp -R examples site/examples
           cp dist/index.mjs dist/index.mjs.map site/dist/
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v4
         with:
           path: site
